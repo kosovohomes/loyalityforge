@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
         token.orgId = (user as { orgId?: string }).orgId ?? "";
         token.orgName = (user as { orgName?: string }).orgName ?? "";
         token.orgSlug = (user as { orgSlug?: string }).orgSlug ?? "";
-        token.role = (user as { role?: "OWNER" | "MANAGER" | "STAFF" }).role ?? "STAFF";
+        token.role = (user as { role?: "SUPER_ADMIN" | "OWNER" | "MANAGER" | "STAFF" }).role ?? "STAFF";
       }
       return token;
     },

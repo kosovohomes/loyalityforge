@@ -7,7 +7,7 @@ declare module "next-auth" {
       orgId: string;
       orgName: string;
       orgSlug: string;
-      role: "OWNER" | "MANAGER" | "STAFF";
+      role: "SUPER_ADMIN" | "OWNER" | "MANAGER" | "STAFF";
     } & DefaultSession["user"];
   }
 }
@@ -18,6 +18,6 @@ declare module "next-auth/jwt" {
     orgId: string;
     orgName: string;
     orgSlug: string;
-    role: "OWNER" | "MANAGER" | "STAFF";
+    role: "SUPER_ADMIN" | "OWNER" | "MANAGER" | "STAFF";
   }
 }

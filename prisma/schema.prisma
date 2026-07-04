@@ -42,6 +42,7 @@ model Organization {
 }
 
 enum Role {
+  SUPER_ADMIN
   OWNER
   MANAGER
   STAFF
