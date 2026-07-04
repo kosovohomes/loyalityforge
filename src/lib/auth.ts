@@ -39,29 +39,28 @@ export const authOptions: NextAuthOptions = {
           orgName: membership.organization.name,
           orgSlug: membership.organization.slug,
           role: membership.role,
-        } as any;
+        };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        const u = user as any;
-        token.userId = u.id;
-        token.orgId = u.orgId;
-        token.orgName = u.orgName;
-        token.orgSlug = u.orgSlug;
-        token.role = u.role;
+        token.userId = user.id;
+        token.orgId = (user as { orgId?: string }).orgId ?? "";
+        token.orgName = (user as { orgName?: string }).orgName ?? "";
+        token.orgSlug = (user as { orgSlug?: string }).orgSlug ?? "";
+        token.role = (user as { role?: "OWNER" | "MANAGER" | "STAFF" }).role ?? "STAFF";
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.userId;
-        (session.user as any).orgId = token.orgId;
-        (session.user as any).orgName = token.orgName;
-        (session.user as any).orgSlug = token.orgSlug;
-        (session.user as any).role = token.role;
+        session.user.id = token.userId;
+        session.user.orgId = token.orgId;
+        session.user.orgName = token.orgName;
+        session.user.orgSlug = token.orgSlug;
+        session.user.role = token.role;
       }
       return session;
     },
@@ -76,12 +75,11 @@ export function getAuthSession() {
 export async function getCurrentOrgContext() {
   const session = await getAuthSession();
   if (!session?.user) return null;
-  const u = session.user as any;
   return {
-    userId: u.id as string,
-    orgId: u.orgId as string,
-    orgName: u.orgName as string,
-    orgSlug: u.orgSlug as string,
-    role: u.role as "OWNER" | "MANAGER" | "STAFF",
+    userId: session.user.id,
+    orgId: session.user.orgId,
+    orgName: session.user.orgName,
+    orgSlug: session.user.orgSlug,
+    role: session.user.role,
   };
 }
