@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export function WidgetSnippet({ orgSlug }: { orgSlug: string }) {
-  const [origin, setOrigin] = useState("https://your-loyaltyforge-domain.com");
+  const [origin, setOrigin] = useState("https://loyaltyforge.vercel.app");
 
   useEffect(() => {
     setOrigin(window.location.origin);

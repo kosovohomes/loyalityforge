@@ -33,7 +33,7 @@ const STEPS = [
   {
     num: "03",
     title: "Watch Loyalty Grow",
-    desc: "Track visits, redemptions, and lifetime value in real time. Automated nudges bring customers back before they forget you exist.",
+    desc: "Track visits, redemptions, and lifetime value in real time. Analytics show what rewards and challenges drive the most engagement.",
   },
 ];
 
@@ -78,12 +78,10 @@ const STATS = [
 ];
 
 const INTEGRATIONS = [
-  "Shopify",
-  "Square",
-  "Lightspeed",
-  "Stripe",
-  "Mailchimp",
-  "Klaviyo",
+  "REST API",
+  "QR Code Sign-up",
+  "Embeddable Widget",
+  "JSON Webhooks",
 ];
 
 const PLANS = [
@@ -98,7 +96,7 @@ const PLANS = [
       "Stamp card or points",
       "QR code sign-up",
       "Basic analytics",
-      "Email support",
+      "Contact form support",
     ],
     cta: "Start Free",
     popular: false,
@@ -111,12 +109,11 @@ const PLANS = [
     features: [
       "Up to 5,000 members",
       "Unlimited programs",
-      "All program types",
+      "All program types (stamp, points, tiered)",
       "Embeddable widget",
-      "Advanced analytics",
-      "API access",
-      "Priority support",
-      "Custom branding",
+      "Advanced analytics (CLV, churn, ROI)",
+      "Full REST API access",
+      "Challenges & rewards catalog",
     ],
     cta: "Start Growing",
     popular: true,
@@ -130,11 +127,9 @@ const PLANS = [
       "Unlimited members",
       "Everything in Growth",
       "Multi-location support",
-      "Dedicated account manager",
-      "Custom integrations",
-      "White-label option",
-      "SLA guarantee",
-      "Phone support",
+      "Referral & OneStamp system",
+      "Scratch & Win games",
+      "GDPR consent management",
     ],
     cta: "Contact Sales",
     popular: false,
@@ -174,7 +169,7 @@ const FAQS = [
   },
   {
     q: "Does it integrate with my POS?",
-    a: "Yes. We have native integrations with Shopify, Square, and Lightspeed. We also provide a REST API and embeddable widget so you can connect LoyaltyForge to virtually any system.",
+    a: "LoyaltyForge provides a REST API and embeddable widget that work with any POS or website. You can enroll customers, award points, and check balances from any system with a single API key. Direct integrations with Shopify, Square, and Lightspeed are on our roadmap.",
   },
   {
     q: "Is there an API?",
@@ -182,7 +177,7 @@ const FAQS = [
   },
   {
     q: "What kind of support do you offer?",
-    a: "Starter plans include email support with a 24-hour response time. Growth plans get priority support. Scale plans include a dedicated account manager and phone support with an SLA guarantee.",
+    a: "All plans include access to our contact form for help with setup and questions. The Growth plan includes full API documentation. We respond to all inquiries within 24 hours.",
   },
 ];
 
@@ -260,20 +255,19 @@ export default function Home() {
                 <div className="flex items-center gap-2">
                   <span className="text-gold text-lg">&#9733;</span>
                   <span>
-                    <strong className="text-espresso">12M+</strong> stamps
-                    issued
+                    <strong className="text-espresso">15-30%</strong> more repeat visits
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-gold text-lg">&#9733;</span>
                   <span>
-                    <strong className="text-espresso">4.9</strong> App Rating
+                    <strong className="text-espresso">3x</strong> ROI on loyalty spend
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-gold text-lg">&#9733;</span>
                   <span>
-                    <strong className="text-espresso">80+</strong> countries
+                    <strong className="text-espresso">Free</strong> to get started
                   </span>
                 </div>
               </div>
@@ -442,10 +436,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 py-20">
           <div className="mb-12 text-center">
             <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-gold-dark">
-              Connects to your stack
+              Built-in connectivity
             </p>
             <h2 className="font-display text-3xl font-semibold text-espresso md:text-4xl">
-              Works With Your Favorite Tools
+              Connects to Your Existing Setup
             </h2>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4">
@@ -457,9 +451,6 @@ export default function Home() {
                 {name}
               </div>
             ))}
-            <div className="rounded-xl border border-dashed border-espresso/20 bg-transparent px-6 py-3 text-sm font-medium text-espresso/50">
-              REST API
-            </div>
           </div>
         </div>
       </section>
@@ -607,7 +598,7 @@ export default function Home() {
             Ready to Build Customer Loyalty?
           </h2>
           <p className="mx-auto mt-4 max-w-md text-cream/60">
-            Join thousands of cafe owners who turned one-time buyers into
+            Join cafe owners who are turning one-time buyers into
             lifelong regulars.
           </p>
           <div className="mt-8">
@@ -646,8 +637,7 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-espresso/60">
                 <li><a href="#features" className="transition hover:text-espresso">Features</a></li>
                 <li><a href="#pricing" className="transition hover:text-espresso">Pricing</a></li>
-                <li><a href="#" className="transition hover:text-espresso">API Docs</a></li>
-                <li><a href="#" className="transition hover:text-espresso">Integrations</a></li>
+                <li><Link href="/settings/api-keys" className="transition hover:text-espresso">API & Widget</Link></li>
               </ul>
             </div>
             <div>
@@ -655,10 +645,9 @@ export default function Home() {
                 Company
               </h4>
               <ul className="space-y-2 text-sm text-espresso/60">
-                <li><a href="#" className="transition hover:text-espresso">About</a></li>
-                <li><a href="#" className="transition hover:text-espresso">Blog</a></li>
-                <li><a href="#" className="transition hover:text-espresso">Careers</a></li>
-                <li><a href="#" className="transition hover:text-espresso">Contact</a></li>
+                <li><Link href="/support" className="transition hover:text-espresso">Contact Support</Link></li>
+                <li><Link href="/register" className="transition hover:text-espresso">Get Started</Link></li>
+                <li><Link href="/login" className="transition hover:text-espresso">Sign In</Link></li>
               </ul>
             </div>
             <div>
