@@ -125,7 +125,11 @@
     },
     "stats": {
       "title": "Loyalty That Pays Off",
-      "subtitle": "Proven results"
+      "subtitle": "Proven results",
+      "stat1Label": "more repeat visits",
+      "stat2Label": "purchase frequency",
+      "stat3Label": "higher CLV",
+      "roiLabel": "return on investment"
     },
     "integrations": {
       "title": "Connects to Your Existing Setup"
@@ -156,7 +160,31 @@
     },
     "faq": {
       "title": "Frequently Asked Questions",
-      "subtitle": "Common questions"
+      "subtitle": "Common questions",
+      "faq1": {
+        "q": "How does LoyaltyForge work?",
+        "a": "LoyaltyForge lets you create a digital loyalty program in minutes. Choose a template (stamp card, points, or tiered), set your rules, and share it with customers via QR code, website widget, or API. Customers earn rewards automatically with every purchase."
+      },
+      "faq2": {
+        "q": "How much does it cost?",
+        "a": "We offer a free Starter plan for up to 100 members with no time limit. Growth ($29/mo) unlocks advanced features for growing cafes, and Scale ($99/mo) supports multi-location operations with unlimited members."
+      },
+      "faq3": {
+        "q": "How long does setup take?",
+        "a": "Most cafe owners have their program live within 15 minutes. You pick a template, customize the name and rewards, generate your QR code, and you're ready to go. No developer needed."
+      },
+      "faq4": {
+        "q": "Does it integrate with my POS?",
+        "a": "LoyaltyForge provides a REST API and embeddable widget that work with any POS or website. You can enroll customers, award points, and check balances from any system with a single API key. Direct integrations with Shopify, Square, and Lightspeed are on our roadmap."
+      },
+      "faq5": {
+        "q": "Is there an API?",
+        "a": "Absolutely. Our REST API lets you enroll customers, award points, process redemptions, and check balances from any POS, website, or mobile app. Full documentation is included with every Growth plan and above."
+      },
+      "faq6": {
+        "q": "What kind of support do you offer?",
+        "a": "All plans include access to our contact form for help with setup and questions. The Growth plan includes full API documentation. We respond to all inquiries within 24 hours."
+      }
     },
     "cta": {
       "title": "Ready to Build Customer Loyalty?",

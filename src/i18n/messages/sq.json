@@ -125,7 +125,11 @@
     },
     "stats": {
       "title": "Besnikëria që Paguan",
-      "subtitle": "Rezultate të provuara"
+      "subtitle": "Rezultate të provuara",
+      "stat1Label": "vizita më të përsëritura",
+      "stat2Label": "frekuenca e blerjeve",
+      "stat3Label": "vlerë më e lartë e klientit",
+      "roiLabel": "kthim nga investimi"
     },
     "integrations": {
       "title": "Lidhet me Konfigurimin Tuaj Ekzistues"
@@ -156,7 +160,31 @@
     },
     "faq": {
       "title": "Pyetjet e Bëra Më Shpesh",
-      "subtitle": "Pyetje të zakonshme"
+      "subtitle": "Pyetje të zakonshme",
+      "faq1": {
+        "q": "Si funksionon LoyaltyForge?",
+        "a": "LoyaltyForge ju lejon të krijoni një program besnikërie dixhitale në minuta. Zgjidhni një model (kartë pullash, pikë ose nivele), vendosni rregullat tuaja dhe ndajini me klientët përmes kodit QR, widget-it të faqes ose API. Klientët fitojnë shpërblime automatikisht me çdo blerje."
+      },
+      "faq2": {
+        "q": "Sa kushton?",
+        "a": "Ofrojmë një plan Falas për deri në 100 anëtarë pa kohë të kufizuar. Plani Rritja ($29/muaj) hap veçori të avancuara, dhe Plani Shkallëzimi ($99/muaj) mbështet operacione me shumë vendndodhje."
+      },
+      "faq3": {
+        "q": "Sa kohë duhet për konfigurimin?",
+        "a": "Shumica e pronarëve të kafeneve e bëjnë programin e tyre gati brenda 15 minutave. Zgjidhni një model, personalizoni emrin dhe shpërblimet, gjeneroni kodin QR dhe jeni gati."
+      },
+      "faq4": {
+        "q": "A integrohet me POS-in tim?",
+        "a": "LoyaltyForge ofron API REST dhe widget të përshtatshëm që funksionojnë me çdo POS ose faqe interneti. Mund të regjistroni klientët, jepni pikë dhe kontrolloni bilancet nga çdo sistem me një çelës API."
+      },
+      "faq5": {
+        "q": "A ka API?",
+        "a": "Sigurisht. API REST ju lejon të regjistroni klientët, jepni pikë, përpunoni tërheqjet dhe kontrolloni bilancet nga çdo POS, faqe interneti ose aplikacion celular."
+      },
+      "faq6": {
+        "q": "Çfarë lloj mbështetje ofroni?",
+        "a": "Të gjitha planet përfshijnë formularin e kontaktit për ndihmë. Plani Rritja përfshin dokumentacionin e plotë API. Përgjigjemi të gjitha pyetjeve brenda 24 orëve."
+      }
     },
     "cta": {
       "title": "Jeni Gati për të Ndërtuar Besnikërinë e Klientëve?",
