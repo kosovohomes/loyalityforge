@@ -1,8 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { parseRules, computeTier, TieredRules } from "@/lib/program-types";
+import { rateLimit, rateLimitHeaders, getClientIp } from "@/lib/rate-limit";
 
-export function jsonError(message: string, status: number) {
-  return Response.json({ error: message }, { status });
+export function jsonError(message: string, status: number, headers?: Record<string, string>) {
+  return Response.json({ error: message }, { status, headers });
+}
+
+export function checkRateLimit(request: Request, key: string, max = 60) {
+  const ip = getClientIp(request);
+  const rl = rateLimit(`${key}:${ip}`, max);
+  if (!rl.allowed) {
+    return { blocked: true, response: jsonError("Rate limit exceeded. Try again later.", 429, rateLimitHeaders(rl)) };
+  }
+  return { blocked: false, headers: rateLimitHeaders(rl) };
 }
 
 export async function loadOrgProgram(organizationId: string, programId: string) {

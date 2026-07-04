@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { authenticateApiKey } from "@/lib/api-key";
-import { jsonError, loadOrgProgram } from "@/lib/api-v1-helpers";
+import { jsonError, loadOrgProgram, checkRateLimit } from "@/lib/api-v1-helpers";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const rl = checkRateLimit(request, "v1:balance", 120);
+  if (rl.blocked) return rl.response;
+
   const auth = await authenticateApiKey(request);
   if (!auth) return jsonError("Invalid or missing API key", 401);
 

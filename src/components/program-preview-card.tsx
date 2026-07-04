@@ -1,4 +1,5 @@
 import { ProgramType, ProgramRules, ProgramBranding, StampRules, PointsRules, TieredRules } from "@/lib/program-types";
+import { sanitizeLogoUrl } from "@/lib/sanitize";
 
 export function ProgramPreviewCard({
   name,
@@ -12,6 +13,7 @@ export function ProgramPreviewCard({
   branding: ProgramBranding;
 }) {
   const color = branding.primaryColor || "#C4922C";
+  const safeLogoUrl = sanitizeLogoUrl(branding.logoUrl);
 
   return (
     <div
@@ -21,9 +23,9 @@ export function ProgramPreviewCard({
       <div className="p-5 text-white">
         <div className="flex items-center justify-between">
           <p className="text-xs font-semibold uppercase tracking-widest opacity-80">Loyalty card</p>
-          {branding.logoUrl ? (
+          {safeLogoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={branding.logoUrl} alt="" className="h-7 w-7 rounded-full bg-white/20 object-cover" />
+            <img src={safeLogoUrl} alt="" className="h-7 w-7 rounded-full bg-white/20 object-cover" />
           ) : (
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-xs font-bold">
               {name.charAt(0).toUpperCase() || "C"}

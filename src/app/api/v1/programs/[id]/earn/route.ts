@@ -8,6 +8,7 @@ import {
   findOrCreateCustomer,
   getOrCreateCard,
   maybeUpdateTier,
+  checkRateLimit,
 } from "@/lib/api-v1-helpers";
 
 const schema = z.object({
@@ -21,6 +22,9 @@ const schema = z.object({
 });
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
+  const rl = checkRateLimit(request, "v1:earn");
+  if (rl.blocked) return rl.response;
+
   const auth = await authenticateApiKey(request);
   if (!auth) return jsonError("Invalid or missing API key", 401);
 

@@ -1,11 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { corsJson, corsOptions } from "@/lib/cors";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function OPTIONS() {
   return corsOptions();
 }
 
 export async function GET(request: Request, { params }: { params: { slug: string; id: string } }) {
+  const ip = getClientIp(request);
+  const rl = rateLimit(`pub:balance:${ip}`, 30);
+  if (!rl.allowed) return corsJson({ error: "Rate limit exceeded" }, 429);
+
   const org = await prisma.organization.findUnique({ where: { slug: params.slug } });
   if (!org) return corsJson({ error: "Cafe not found" }, 404);
 

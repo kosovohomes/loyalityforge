@@ -3,40 +3,54 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentOrgContext } from "@/lib/auth";
 import { AddCustomerForm } from "@/components/add-customer-form";
 import { CustomerSearch } from "@/components/customer-search";
+import { Pagination } from "@/components/pagination";
+
+const PAGE_SIZE = 20;
 
 export default async function CustomersPage({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: { q?: string; page?: string };
 }) {
   const ctx = await getCurrentOrgContext();
   if (!ctx) return null;
   const q = searchParams.q?.trim() ?? "";
+  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
 
-  const customers = await prisma.customer.findMany({
-    where: {
-      organizationId: ctx.orgId,
-      ...(q
-        ? {
-            OR: [
-              { name: { contains: q } },
-              { email: { contains: q } },
-              { phone: { contains: q } },
-            ],
-          }
-        : {}),
-    },
-    include: { cards: { include: { program: true } } },
-    orderBy: { createdAt: "desc" },
-    take: 200,
-  });
+  const where = {
+    organizationId: ctx.orgId,
+    ...(q
+      ? {
+          OR: [
+            { name: { contains: q } },
+            { email: { contains: q } },
+            { phone: { contains: q } },
+          ],
+        }
+      : {}),
+  };
+
+  const [customers, total] = await Promise.all([
+    prisma.customer.findMany({
+      where,
+      include: { cards: { include: { program: true } } },
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+    }),
+    prisma.customer.count({ where }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold text-espresso">Customers</h1>
-          <p className="mt-1 text-sm text-espresso/60">{customers.length} shown · search and manage members.</p>
+          <p className="mt-1 text-sm text-espresso/60">
+            {total} total · page {page} of {totalPages}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <a href="/api/reports/export?type=customers" className="btn-secondary text-sm">Export CSV</a>
@@ -66,7 +80,7 @@ export default async function CustomersPage({
                     {c.name || "Unnamed customer"}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-espresso/70">{c.email || c.phone || "—"}</td>
+                <td className="px-4 py-3 text-espresso/70">{c.email || c.phone || "\u2014"}</td>
                 <td className="px-4 py-3 text-espresso/70">
                   {c.cards.length === 0
                     ? "Not enrolled"
@@ -85,6 +99,13 @@ export default async function CustomersPage({
           </tbody>
         </table>
       </div>
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        basePath="/customers"
+        searchParams={q ? { q } : undefined}
+      />
     </div>
   );
 }

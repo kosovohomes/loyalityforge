@@ -3,9 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentOrgContext } from "@/lib/auth";
 import { ProgramAnalyticsChart } from "@/components/program-analytics-chart";
 
-// Simple, transparent estimate: each redemption represents a completed visit that
-// likely wouldn't have happened without the loyalty incentive. We assume a modest
-// average ticket size and a conservative fraction of redemptions being incremental.
 const ASSUMED_AVG_TICKET = 7.5;
 const INCREMENTAL_VISIT_FACTOR = 0.4;
 
@@ -13,33 +10,41 @@ export default async function DashboardPage() {
   const ctx = await getCurrentOrgContext();
   if (!ctx) return null;
 
-  const [totalMembers, programs, transactions] = await Promise.all([
-    prisma.customer.count({ where: { organizationId: ctx.orgId } }),
-    prisma.loyaltyProgram.findMany({
-      where: { organizationId: ctx.orgId },
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.transaction.findMany({
-      where: { organizationId: ctx.orgId },
-      orderBy: { createdAt: "desc" },
-      take: 500,
-    }),
-  ]);
+  const [totalMembers, programs, redeemCount, perProgramAgg] =
+    await Promise.all([
+      prisma.customer.count({ where: { organizationId: ctx.orgId } }),
+      prisma.loyaltyProgram.findMany({
+        where: { organizationId: ctx.orgId },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.transaction.count({ where: { organizationId: ctx.orgId, type: "REDEEM" } }),
+      prisma.loyaltyProgram.findMany({
+        where: { organizationId: ctx.orgId },
+        select: {
+          id: true,
+          name: true,
+          status: true,
+          _count: {
+            select: {
+              transactions: { where: { type: "ENROLL" } },
+            },
+          },
+          cards: {
+            select: { balance: true },
+          },
+        },
+      }),
+    ]);
 
-  const redemptions = transactions.filter((t) => t.type === "REDEEM");
-  const estimatedRevenueLift = redemptions.length * ASSUMED_AVG_TICKET * INCREMENTAL_VISIT_FACTOR;
+  const estimatedRevenueLift = redeemCount * ASSUMED_AVG_TICKET * INCREMENTAL_VISIT_FACTOR;
 
-  const perProgram = programs.map((p) => {
-    const tx = transactions.filter((t) => t.programId === p.id);
-    return {
-      id: p.id,
-      name: p.name,
-      status: p.status,
-      members: tx.filter((t) => t.type === "ENROLL").length,
-      earns: tx.filter((t) => t.type === "EARN").length,
-      redemptions: tx.filter((t) => t.type === "REDEEM").length,
-    };
-  });
+  const perProgram = perProgramAgg.map((p) => ({
+    id: p.id,
+    name: p.name,
+    status: p.status,
+    members: p._count.transactions,
+    totalBalance: p.cards.reduce((sum, c) => sum + c.balance, 0),
+  }));
 
   return (
     <div>
@@ -55,11 +60,11 @@ export default async function DashboardPage() {
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard label="Total members" value={totalMembers.toLocaleString()} />
-        <StatCard label="Redemptions" value={redemptions.length.toLocaleString()} />
+        <StatCard label="Redemptions" value={redeemCount.toLocaleString()} />
         <StatCard
           label="Est. revenue lift"
           value={`$${estimatedRevenueLift.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
-          hint={`${redemptions.length} redemptions × $${ASSUMED_AVG_TICKET} avg ticket × ${INCREMENTAL_VISIT_FACTOR * 100}% incremental`}
+          hint={`${redeemCount} redemptions × $${ASSUMED_AVG_TICKET} avg ticket × ${INCREMENTAL_VISIT_FACTOR * 100}% incremental`}
         />
       </div>
 
@@ -79,7 +84,8 @@ export default async function DashboardPage() {
           <>
             <div className="card mt-4">
               <ProgramAnalyticsChart
-                data={perProgram.map((p) => ({ name: p.name, Earns: p.earns, Redemptions: p.redemptions }))}
+                data={perProgram.map((p) => ({ name: p.name, Balance: p.totalBalance, Members: p.members }))}
+                bars={[{ key: "Balance", color: "#C4922C" }, { key: "Members", color: "#33513F" }]}
               />
             </div>
             <div className="mt-6 overflow-hidden rounded-card border border-espresso/10">
@@ -89,8 +95,7 @@ export default async function DashboardPage() {
                     <th className="px-4 py-3">Program</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3">Enrollments</th>
-                    <th className="px-4 py-3">Earn events</th>
-                    <th className="px-4 py-3">Redemptions</th>
+                    <th className="px-4 py-3">Total balance</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-espresso/10 bg-white/50">
@@ -105,8 +110,7 @@ export default async function DashboardPage() {
                         <StatusPill status={p.status} />
                       </td>
                       <td className="px-4 py-3">{p.members}</td>
-                      <td className="px-4 py-3">{p.earns}</td>
-                      <td className="px-4 py-3">{p.redemptions}</td>
+                      <td className="px-4 py-3">{p.totalBalance.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

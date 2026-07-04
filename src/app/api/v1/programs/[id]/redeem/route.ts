@@ -2,7 +2,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { authenticateApiKey } from "@/lib/api-key";
 import { parseRules, StampRules, PointsRules } from "@/lib/program-types";
-import { jsonError, loadOrgProgram, maybeUpdateTier } from "@/lib/api-v1-helpers";
+import { jsonError, loadOrgProgram, maybeUpdateTier, checkRateLimit } from "@/lib/api-v1-helpers";
 
 const schema = z.object({
   externalId: z.string().min(1),
@@ -10,6 +10,9 @@ const schema = z.object({
 });
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {
+  const rl = checkRateLimit(request, "v1:redeem");
+  if (rl.blocked) return rl.response;
+
   const auth = await authenticateApiKey(request);
   if (!auth) return jsonError("Invalid or missing API key", 401);
 
