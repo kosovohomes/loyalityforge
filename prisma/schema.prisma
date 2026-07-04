@@ -5,11 +5,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  // Some managed Postgres providers (Vercel Postgres, Neon, Supabase) give you
-  // a pooled connection string for the app and a separate direct connection
-  // string for migrations. If yours does, uncomment the line below and set
-  // DIRECT_URL in your environment.
-  // directUrl = env("DIRECT_URL")
 }
 
 // ---------------------------------------------------------------------------
@@ -17,24 +12,32 @@ datasource db {
 // ---------------------------------------------------------------------------
 
 model User {
-  id           String       @id @default(cuid())
-  email        String       @unique
-  passwordHash String
-  name         String?
-  createdAt    DateTime     @default(now())
-  memberships  Membership[]
+  id             String       @id @default(cuid())
+  email          String       @unique
+  passwordHash   String
+  name           String?
+  mfaEnabled     Boolean      @default(false)
+  mfaSecret      String?
+  createdAt      DateTime     @default(now())
+  memberships    Membership[]
+  consents       Consent[]
+  referralsMade  Referral[]   @relation("Referrer")
 }
 
 model Organization {
-  id          String           @id @default(cuid())
-  name        String
-  slug        String           @unique
-  createdAt   DateTime         @default(now())
-  memberships Membership[]
-  programs    LoyaltyProgram[]
-  customers   Customer[]
-  apiKeys     ApiKey[]
-  transactions Transaction[]
+  id             String           @id @default(cuid())
+  name           String
+  slug           String           @unique
+  createdAt      DateTime         @default(now())
+  memberships    Membership[]
+  programs       LoyaltyProgram[]
+  customers      Customer[]
+  apiKeys        ApiKey[]
+  transactions   Transaction[]
+  rewards        Reward[]
+  challenges     Challenge[]
+  oneStamps      OneStamp[]
+  scratchGames   ScratchGame[]
 }
 
 enum Role {
@@ -78,16 +81,13 @@ model LoyaltyProgram {
   name           String
   type           ProgramType
   status         ProgramStatus  @default(DRAFT)
-  // Rules: shape depends on `type`. e.g. STAMP -> { stampsRequired, rewardDescription, minSpend, expiresAfterDays }
-  //        POINTS -> { pointsPerDollar, pointsForReward, rewardDescription, minSpend, expiresAfterDays }
-  //        TIERED -> { tiers: [{ name, threshold, perks }] }
-  rules          String         // JSON string (SQLite has no native JSON type)
-  // Branding: { logoUrl, primaryColor, terms }
+  rules          String         // JSON string
   branding       String         // JSON string
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   cards          LoyaltyCard[]
   transactions   Transaction[]
+  challenges     Challenge[]
 
   @@index([organizationId])
 }
@@ -96,13 +96,21 @@ model Customer {
   id             String        @id @default(cuid())
   organizationId String
   organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  externalId     String?       // used by POS / website integrations
+  externalId     String?
   name           String?
   email          String?
   phone          String?
+  totalSpend     Float         @default(0) // lifetime spend for CLV
+  totalVisits    Int           @default(0)
+  lastVisitAt    DateTime?
   createdAt      DateTime      @default(now())
   cards          LoyaltyCard[]
   transactions   Transaction[]
+  redemptions    Redemption[]
+  referralsMade  Referral[]    @relation("ReferredCustomer")
+  referralsGot   Referral[]    @relation("ReferrerCustomer")
+  challenges     ChallengeProgress[]
+  scratchGames   ScratchGame[]
 
   @@unique([organizationId, externalId])
   @@index([organizationId])
@@ -114,8 +122,8 @@ model LoyaltyCard {
   customer   Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
   programId  String
   program    LoyaltyProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  balance    Int            @default(0) // stamps or points, depending on program type
-  tier       String?        // current tier name, for TIERED programs
+  balance    Int            @default(0)
+  tier       String?
   createdAt  DateTime       @default(now())
   updatedAt  DateTime       @updatedAt
 
@@ -128,6 +136,9 @@ enum TransactionType {
   REDEEM
   ADJUST_ADD
   ADJUST_REMOVE
+  REFERRAL_BONUS
+  CHALLENGE_COMPLETE
+  SCRATCH_WIN
 }
 
 model Transaction {
@@ -139,9 +150,9 @@ model Transaction {
   customerId     String
   customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade)
   type           TransactionType
-  amount         Int             // positive delta for earn/adjust_add, negative for redeem/adjust_remove
-  reason         String?         // required for manual staff adjustments (audit trail)
-  metadata       String?         // JSON string, e.g. { source: "api", orderId: "..." }
+  amount         Int
+  reason         String?
+  metadata       String?         // JSON string
   createdAt      DateTime        @default(now())
 
   @@index([organizationId])
@@ -154,11 +165,196 @@ model ApiKey {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   name           String
-  prefix         String       // first chars shown in UI, e.g. lf_live_ab12
+  prefix         String
   hashedKey      String       @unique
   createdAt      DateTime     @default(now())
   lastUsedAt     DateTime?
   revoked        Boolean      @default(false)
 
   @@index([organizationId])
+}
+
+// ---------------------------------------------------------------------------
+// Rewards Catalog
+// ---------------------------------------------------------------------------
+
+enum RewardType {
+  COUPON
+  FREE_PRODUCT
+  FREE_SHIPPING
+  EXPERIENTIAL
+  CHARITY_DONATION
+  STORE_CREDIT
+}
+
+enum RewardCostType {
+  POINTS
+  STAMPS
+}
+
+model Reward {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  type           RewardType
+  costType       RewardCostType @default(POINTS)
+  cost           Int            // points or stamps required
+  stock          Int?           // null = unlimited
+  imageUrl       String?
+  charityName    String?        // for CHARITY_DONATION type
+  charityUrl     String?
+  active         Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  redemptions    Redemption[]
+
+  @@index([organizationId])
+}
+
+model Redemption {
+  id         String   @id @default(cuid())
+  rewardId   String
+  reward     Reward   @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  pointsSpent Int
+  couponCode String?
+  status     String   @default("PENDING") // PENDING, FULFILLED, EXPIRED
+  createdAt  DateTime @default(now())
+
+  @@index([rewardId])
+  @@index([customerId])
+}
+
+// ---------------------------------------------------------------------------
+// Challenges & Milestones
+// ---------------------------------------------------------------------------
+
+enum ChallengeType {
+  VISIT_COUNT
+  SPEND_AMOUNT
+  STREAK
+  REFERRAL_COUNT
+  BIRTHDAY
+  CUSTOM
+}
+
+model Challenge {
+  id             String         @id @default(cuid())
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  programId      String?
+  program        LoyaltyProgram? @relation(fields: [programId], references: [id], onDelete: SetNull)
+  name           String
+  description    String
+  type           ChallengeType
+  targetValue    Int            // e.g. 3 visits, $100 spend
+  rewardPoints   Int            // points awarded on completion
+  badgeName      String?        // e.g. "Local Hero"
+  badgeIcon      String?
+  startDate      DateTime?
+  endDate        DateTime?
+  active         Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  progress       ChallengeProgress[]
+
+  @@index([organizationId])
+}
+
+model ChallengeProgress {
+  id          String    @id @default(cuid())
+  challengeId String
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  currentValue Int      @default(0)
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([challengeId, customerId])
+}
+
+// ---------------------------------------------------------------------------
+// Referral System
+// ---------------------------------------------------------------------------
+
+model Referral {
+  id               String   @id @default(cuid())
+  referrerUserId   String
+  referrerUser     User     @relation("Referrer", fields: [referrerUserId], references: [id], onDelete: Cascade)
+  referredCustomerId String?
+  referredCustomer Customer? @relation("ReferredCustomer", fields: [referredCustomerId], references: [id], onDelete: SetNull)
+  referrerCustomerId String?
+  referrerCustomer Customer? @relation("ReferrerCustomer", fields: [referrerCustomerId], references: [id], onDelete: SetNull)
+  code             String   @unique
+  status           String   @default("PENDING") // PENDING, COMPLETED, EXPIRED
+  bonusAwarded     Int      @default(0)
+  createdAt        DateTime @default(now())
+  completedAt      DateTime?
+
+  @@index([referrerUserId])
+  @@index([code])
+}
+
+// ---------------------------------------------------------------------------
+// OneStamps (Single-use QR codes)
+// ---------------------------------------------------------------------------
+
+model OneStamp {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  code           String       @unique // single-use code
+  points         Int          // points granted when used
+  programId      String?
+  used           Boolean      @default(false)
+  usedBy         String?      // customer externalId
+  usedAt         DateTime?
+  expiresAt      DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([organizationId])
+  @@index([code])
+}
+
+// ---------------------------------------------------------------------------
+// Scratch & Win Games
+// ---------------------------------------------------------------------------
+
+model ScratchGame {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customerId     String
+  customer       Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  gameId         String       // which scratch card design
+  won            Boolean      @default(false)
+  prize          Int          @default(0) // points won
+  revealed       Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  revealedAt     DateTime?
+
+  @@index([organizationId])
+  @@index([customerId])
+}
+
+// ---------------------------------------------------------------------------
+// GDPR Consent Management
+// ---------------------------------------------------------------------------
+
+model Consent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose   String   // e.g. "marketing_email", "analytics", "third_party_sharing"
+  granted   Boolean
+  ipAddr    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }

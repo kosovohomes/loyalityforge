@@ -179,3 +179,131 @@ export async function revokeApiKey(keyId: string) {
   await prisma.apiKey.update({ where: { id: keyId }, data: { revoked: true } });
   revalidatePath("/settings/api-keys");
 }
+
+// ---------------------------------------------------------------------------
+// Rewards Catalog
+// ---------------------------------------------------------------------------
+
+export async function createReward(input: {
+  name: string;
+  description?: string;
+  type: "COUPON" | "FREE_PRODUCT" | "FREE_SHIPPING" | "EXPERIENTIAL" | "CHARITY_DONATION" | "STORE_CREDIT";
+  costType?: "POINTS" | "STAMPS";
+  cost: number;
+  stock?: number | null;
+  imageUrl?: string;
+  charityName?: string;
+  charityUrl?: string;
+}) {
+  const ctx = await requireOrg();
+  const reward = await prisma.reward.create({
+    data: {
+      organizationId: ctx.orgId,
+      name: input.name,
+      description: input.description,
+      type: input.type,
+      costType: input.costType ?? "POINTS",
+      cost: input.cost,
+      stock: input.stock,
+      imageUrl: input.imageUrl,
+      charityName: input.charityName,
+      charityUrl: input.charityUrl,
+    },
+  });
+  revalidatePath("/rewards");
+  return reward.id;
+}
+
+export async function updateReward(rewardId: string, input: {
+  name?: string;
+  description?: string;
+  cost?: number;
+  stock?: number | null;
+  active?: boolean;
+}) {
+  const ctx = await requireOrg();
+  const reward = await prisma.reward.findFirst({
+    where: { id: rewardId, organizationId: ctx.orgId },
+  });
+  if (!reward) throw new Error("Reward not found");
+  await prisma.reward.update({
+    where: { id: rewardId },
+    data: input,
+  });
+  revalidatePath("/rewards");
+}
+
+export async function deleteReward(rewardId: string) {
+  const ctx = await requireOrg();
+  const reward = await prisma.reward.findFirst({
+    where: { id: rewardId, organizationId: ctx.orgId },
+  });
+  if (!reward) throw new Error("Reward not found");
+  await prisma.reward.delete({ where: { id: rewardId } });
+  revalidatePath("/rewards");
+}
+
+export async function redeemReward(input: {
+  rewardId: string;
+  customerId: string;
+}) {
+  const ctx = await requireOrg();
+  const reward = await prisma.reward.findFirst({
+    where: { id: input.rewardId, organizationId: ctx.orgId },
+  });
+  if (!reward) throw new Error("Reward not found");
+  if (!reward.active) throw new Error("Reward is not active");
+  if (reward.stock !== null && reward.stock <= 0) throw new Error("Reward is out of stock");
+
+  const customer = await prisma.customer.findFirst({
+    where: { id: input.customerId, organizationId: ctx.orgId },
+  });
+  if (!customer) throw new Error("Customer not found");
+
+  const programs = await prisma.loyaltyProgram.findMany({
+    where: { organizationId: ctx.orgId, status: "PUBLISHED" },
+  });
+  
+  let deducted = false;
+  for (const program of programs) {
+    const card = await prisma.loyaltyCard.findUnique({
+      where: { customerId_programId: { customerId: customer.id, programId: program.id } },
+    });
+    if (card && card.balance >= reward.cost) {
+      await prisma.$transaction([
+        prisma.loyaltyCard.update({
+          where: { id: card.id },
+          data: { balance: card.balance - reward.cost },
+        }),
+        prisma.redemption.create({
+          data: {
+            rewardId: reward.id,
+            customerId: customer.id,
+            pointsSpent: reward.cost,
+            status: "FULFILLED",
+          },
+        }),
+        prisma.transaction.create({
+          data: {
+            organizationId: ctx.orgId,
+            programId: program.id,
+            customerId: customer.id,
+            type: "REDEEM",
+            amount: -reward.cost,
+            reason: `Redeemed reward: ${reward.name}`,
+          },
+        }),
+      ]);
+      if (reward.stock !== null) {
+        await prisma.reward.update({
+          where: { id: reward.id },
+          data: { stock: reward.stock - 1 },
+        });
+      }
+      deducted = true;
+      break;
+    }
+  }
+  if (!deducted) throw new Error("Insufficient balance across all programs");
+  revalidatePath("/rewards");
+}

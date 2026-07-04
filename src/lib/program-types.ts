@@ -89,3 +89,55 @@ export function computeTier(rules: TieredRules, balance: number): string {
   }
   return current;
 }
+
+// ---------------------------------------------------------------------------
+// Non-transactional earning actions
+// ---------------------------------------------------------------------------
+
+export interface EarnAction {
+  id: string;
+  label: string;
+  points: number;
+  description: string;
+}
+
+export const EARN_ACTIONS: EarnAction[] = [
+  { id: "review", label: "Write a Review", points: 50, description: "Earn points for leaving a product review" },
+  { id: "social_share", label: "Social Share", points: 25, description: "Share on social media" },
+  { id: "app_download", label: "App Download", points: 100, description: "Download the mobile app" },
+  { id: "profile_complete", label: "Complete Profile", points: 75, description: "Fill in all profile fields" },
+  { id: "birthday", label: "Birthday Bonus", points: 200, description: "Special birthday reward" },
+  { id: "referral", label: "Refer a Friend", points: 150, description: "Earn when your friend joins" },
+  { id: "check_in", label: "Store Check-in", points: 10, description: "Check in at a physical location" },
+];
+
+// ---------------------------------------------------------------------------
+// Rewards Catalog types
+// ---------------------------------------------------------------------------
+
+export type RewardType = "COUPON" | "FREE_PRODUCT" | "FREE_SHIPPING" | "EXPERIENTIAL" | "CHARITY_DONATION" | "STORE_CREDIT";
+export type RewardCostType = "POINTS" | "STAMPS";
+
+export const REWARD_TYPE_LABELS: Record<RewardType, string> = {
+  COUPON: "Coupon",
+  FREE_PRODUCT: "Free Product",
+  FREE_SHIPPING: "Free Shipping",
+  EXPERIENTIAL: "Experiential Access",
+  CHARITY_DONATION: "Charity Donation",
+  STORE_CREDIT: "Store Credit",
+};
+
+// ---------------------------------------------------------------------------
+// Challenge types
+// ---------------------------------------------------------------------------
+
+export type ChallengeType = "VISIT_COUNT" | "SPEND_AMOUNT" | "STREAK" | "REFERRAL_COUNT" | "BIRTHDAY" | "CUSTOM";
+
+export const CHALLENGE_TYPE_LABELS: Record<ChallengeType, string> = {
+  VISIT_COUNT: "Visit Count",
+  SPEND_AMOUNT: "Spend Amount",
+  STREAK: "Streak",
+  REFERRAL_COUNT: "Referral Count",
+  BIRTHDAY: "Birthday",
+  CUSTOM: "Custom",
+};

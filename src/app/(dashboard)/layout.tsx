@@ -20,6 +20,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <NavLink href="/dashboard" label="Dashboard" />
           <NavLink href="/programs" label="Programs" />
           <NavLink href="/customers" label="Customers" />
+          <NavLink href="/rewards" label="Rewards" />
+          <NavLink href="/challenges" label="Challenges" />
+          <NavLink href="/referrals" label="Referrals" />
+          <NavLink href="/one-stamps" label="OneStamps" />
+          <NavLink href="/scratch-games" label="Scratch Games" />
+          <NavLink href="/analytics" label="Analytics" />
           <NavLink href="/settings/api-keys" label="API & Widget" />
         </nav>
         <div className="mt-auto border-t border-espresso/10 px-6 py-4">
