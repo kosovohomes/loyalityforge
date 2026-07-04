@@ -32,3 +32,36 @@ body {
     @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-espresso/60;
   }
 }
+
+/* RTL Support for Arabic */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .space-y-3 > * + *,
+[dir="rtl"] .space-y-2 > * + * {
+  --tw-space-y-reverse: 1;
+}
+
+[dir="rtl"] input[type="text"],
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="password"],
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+[dir="rtl"] .ml-4 {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+[dir="rtl"] .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .gap-x-10 {
+  gap: 0;
+}

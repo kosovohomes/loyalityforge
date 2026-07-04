@@ -1,24 +1,12 @@
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { locales, defaultLocale } from "@/i18n/config";
 
-export default withAuth(
-  function middleware() {
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-  }
-);
+export default createMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: "always",
+});
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/programs/:path*",
-    "/customers/:path*",
-    "/settings/:path*",
-    "/api/reports/:path*",
-    "/admin/:path*",
-  ],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

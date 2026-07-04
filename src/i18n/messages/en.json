@@ -1,0 +1,447 @@
+{
+  "common": {
+    "appName": "LoyaltyForge",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "all": "All",
+    "of": "of",
+    "total": "Total",
+    "status": "Status",
+    "actions": "Actions",
+    "details": "Details",
+    "close": "Close",
+    "submit": "Submit",
+    "required": "Required",
+    "optional": "Optional",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "createdAt": "Created",
+    "members": "Members",
+    "customers": "Customers",
+    "programs": "Programs",
+    "transactions": "Transactions",
+    "points": "Points",
+    "stamps": "Stamps"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "programs": "Programs",
+    "customers": "Customers",
+    "rewards": "Rewards",
+    "challenges": "Challenges",
+    "referrals": "Referrals",
+    "oneStamps": "OneStamps",
+    "scratchGames": "Scratch Games",
+    "analytics": "Analytics",
+    "apiKeys": "API & Widget",
+    "settings": "Settings",
+    "admin": "Admin Panel",
+    "signOut": "Sign Out",
+    "backToDashboard": "Back to Dashboard"
+  },
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "stories": "Stories",
+      "signIn": "Sign in",
+      "getStarted": "Get Started Free"
+    },
+    "hero": {
+      "badge": "Built for independent cafes",
+      "title1": "Turn One-Time Visitors Into",
+      "titleHighlight": "Loyal Regulars",
+      "subtitle": "The loyalty platform built for cafe owners who want to grow without guessing. Create stamp cards, points programs, or VIP tiers in minutes — not months.",
+      "cta1": "Build Your Program Free",
+      "cta2": "See How It Works",
+      "stat1Value": "15-30%",
+      "stat1Label": "more repeat visits",
+      "stat2Value": "3x",
+      "stat2Label": "ROI on loyalty spend",
+      "stat3Value": "Free",
+      "stat3Label": "to get started"
+    },
+    "brands": {
+      "title": "Trusted by cafes worldwide"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Simple by design",
+      "step1": {
+        "title": "Create Your Program",
+        "desc": "Choose from stamp cards, points programs, or tiered VIP memberships. Set your rules, name your rewards, and preview everything before you publish."
+      },
+      "step2": {
+        "title": "Customers Join",
+        "desc": "Share a unique QR code in-store, embed a widget on your website, or connect via API. Signing up takes seconds — no app download required."
+      },
+      "step3": {
+        "title": "Watch Loyalty Grow",
+        "desc": "Track visits, redemptions, and lifetime value in real time. Analytics show what rewards and challenges drive the most engagement."
+      }
+    },
+    "features": {
+      "title": "Everything You Need",
+      "subtitle": "Whether you run a single shop or a chain, LoyaltyForge gives you the tools to build a program that fits your brand perfectly.",
+      "stampCards": {
+        "title": "Stamp Cards",
+        "desc": "The classic punch card, digitized. Customers collect stamps with every purchase and redeem rewards at thresholds you set."
+      },
+      "points": {
+        "title": "Points Economy",
+        "desc": "Earn points per dollar spent. Let customers redeem for discounts, freebies, or exclusive items — fully configurable."
+      },
+      "tiered": {
+        "title": "Tiered VIP",
+        "desc": "Bronze, Silver, Gold — reward your biggest spenders with escalating perks. Tiers unlock automatically based on activity."
+      },
+      "challenges": {
+        "title": "Challenges & Milestones",
+        "desc": "Gamify the experience. Set challenges like \"Visit 5 days in a row\" and unlock milestone badges that keep customers engaged."
+      },
+      "rewards": {
+        "title": "Rewards Catalog",
+        "desc": "Coupons, free items, experiential rewards, or even charity donations. Build a catalog your customers actually want."
+      },
+      "scratch": {
+        "title": "Scratch & Win",
+        "desc": "Interactive digital scratch cards after every purchase. Instant gratification that drives repeat visits and social sharing."
+      }
+    },
+    "stats": {
+      "title": "Loyalty That Pays Off",
+      "subtitle": "Proven results"
+    },
+    "integrations": {
+      "title": "Connects to Your Existing Setup"
+    },
+    "pricing": {
+      "title": "Start Free, Scale When Ready",
+      "subtitle": "No hidden fees. No contracts. Upgrade or downgrade anytime.",
+      "starter": {
+        "name": "Starter",
+        "desc": "Perfect for testing the waters"
+      },
+      "growth": {
+        "name": "Growth",
+        "desc": "For cafes ready to scale loyalty",
+        "popular": "Most Popular"
+      },
+      "scale": {
+        "name": "Scale",
+        "desc": "For multi-location operations"
+      },
+      "cta": "Start Free",
+      "ctaGrowing": "Start Growing",
+      "ctaContact": "Contact Sales"
+    },
+    "testimonials": {
+      "title": "What Our Customers Say",
+      "subtitle": "Real cafe owners"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Common questions"
+    },
+    "cta": {
+      "title": "Ready to Build Customer Loyalty?",
+      "subtitle": "Join cafe owners who are turning one-time buyers into lifelong regulars.",
+      "button": "Get Started Free",
+      "note": "Free to start. No credit card required."
+    },
+    "footer": {
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
+      "contactSupport": "Contact Support",
+      "getStarted": "Get Started",
+      "signIn": "Sign In",
+      "features": "Features",
+      "pricing": "Pricing",
+      "apiDocs": "API & Widget",
+      "copyright": "All rights reserved. Built for cafe owners, not enterprises."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "emailPlaceholder": "you@example.com",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "createOne": "Create one"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Start building loyalty in minutes",
+      "cafeName": "Cafe / Business Name",
+      "cafeNamePlaceholder": "e.g. Sunrise Coffee",
+      "slug": "URL slug",
+      "slugPlaceholder": "sunrise-coffee",
+      "emailPlaceholder": "you@example.com",
+      "passwordPlaceholder": "Create a password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "overview": "Here's what's happening with your loyalty programs.",
+    "totalMembers": "Total Members",
+    "activePrograms": "Active Programs",
+    "totalPointsIssued": "Total Points Issued",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity"
+  },
+  "programs": {
+    "title": "Loyalty Programs",
+    "new": "New Program",
+    "empty": "No programs yet. Create your first loyalty program to get started.",
+    "types": {
+      "STAMP": "Stamp Card",
+      "POINTS": "Points",
+      "TIERED": "Tiered VIP"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Published",
+      "PAUSED": "Paused"
+    },
+    "newPage": {
+      "title": "Create New Program",
+      "name": "Program Name",
+      "namePlaceholder": "e.g. Summer Stamp Card",
+      "type": "Program Type",
+      "typeDescription": "Choose how customers earn rewards",
+      "create": "Create Program"
+    },
+    "detail": {
+      "enrolled": "enrolled",
+      "transactions": "transactions",
+      "programId": "Program ID",
+      "type": "Type",
+      "status": "Status",
+      "members": "Members",
+      "qrTitle": "QR Code for Joining",
+      "qrDesc": "Scan this QR code to join the loyalty program",
+      "apiTitle": "API Integration",
+      "apiDesc": "Use these endpoints to integrate with your POS",
+      "earnEndpoint": "Award Points",
+      "redeemEndpoint": "Redeem Points",
+      "balanceEndpoint": "Check Balance"
+    }
+  },
+  "customers": {
+    "title": "Customers",
+    "empty": "No customers yet. They'll appear here once they join your programs.",
+    "search": "Search by name or email...",
+    "columns": {
+      "email": "Email",
+      "name": "Name",
+      "joined": "Joined",
+      "balance": "Balance"
+    },
+    "detail": {
+      "title": "Customer Details",
+      "email": "Email",
+      "joined": "Joined",
+      "totalCustomers": "Total Customers",
+      "programsEnrolled": "Programs Enrolled",
+      "totalBalance": "Total Balance",
+      "loyaltyCards": "Loyalty Cards",
+      "noCards": "No loyalty cards yet.",
+      "transactions": "Transactions",
+      "noTransactions": "No transactions yet."
+    }
+  },
+  "rewards": {
+    "title": "Rewards Catalog",
+    "newReward": "New Reward",
+    "empty": "No rewards yet. Create rewards your customers can redeem.",
+    "types": {
+      "COUPON": "Coupon",
+      "FREE_PRODUCT": "Free Product",
+      "FREE_SHIPPING": "Free Shipping",
+      "EXPERIENTIAL": "Experiential Access",
+      "CHARITY_DONATION": "Charity Donation",
+      "STORE_CREDIT": "Store Credit"
+    },
+    "form": {
+      "title": "Create Reward",
+      "name": "Reward Name",
+      "namePlaceholder": "e.g. Free Latte",
+      "description": "Description",
+      "descriptionPlaceholder": "What the customer gets",
+      "type": "Reward Type",
+      "cost": "Cost (points)",
+      "costPlaceholder": "100",
+      "stock": "Stock (optional)",
+      "stockPlaceholder": "Leave empty for unlimited",
+      "charityName": "Charity Name",
+      "charityUrl": "Charity URL"
+    }
+  },
+  "challenges": {
+    "title": "Challenges & Milestones",
+    "newChallenge": "New Challenge",
+    "empty": "No challenges yet. Create challenges to gamify your loyalty program.",
+    "types": {
+      "VISIT_COUNT": "Visit Count",
+      "SPEND_AMOUNT": "Spend Amount",
+      "STREAK": "Streak",
+      "REFERRAL_COUNT": "Referral Count",
+      "BIRTHDAY": "Birthday",
+      "CUSTOM": "Custom"
+    },
+    "progress": "{completed} completed",
+    "form": {
+      "title": "Create Challenge",
+      "name": "Challenge Name",
+      "namePlaceholder": "e.g. Visit 5 Times",
+      "description": "Description",
+      "descriptionPlaceholder": "What customers need to do",
+      "type": "Challenge Type",
+      "target": "Target Value",
+      "targetPlaceholder": "5",
+      "rewardPoints": "Reward Points",
+      "rewardPointsPlaceholder": "100",
+      "badgeName": "Badge Name (optional)",
+      "badgeNamePlaceholder": "e.g. Local Hero"
+    }
+  },
+  "referrals": {
+    "title": "Referral System",
+    "empty": "No referrals yet.",
+    "yourCode": "Your Referral Code",
+    "copyCode": "Copy Code",
+    "stats": "Referral Stats",
+    "totalReferrals": "Total Referrals",
+    "completed": "Completed",
+    "pending": "Pending",
+    "bonusPoints": "Bonus Points Awarded",
+    "recentReferrals": "Recent Referrals"
+  },
+  "oneStamps": {
+    "title": "OneStamps",
+    "subtitle": "Single-use QR codes for one-time rewards",
+    "generate": "Generate OneStamps",
+    "quantity": "Number to generate",
+    "pointsPerStamp": "Points per stamp",
+    "empty": "No OneStamps yet.",
+    "code": "Code",
+    "points": "Points",
+    "status": "Status",
+    "used": "Used",
+    "available": "Available"
+  },
+  "scratchGames": {
+    "title": "Scratch & Win Games",
+    "newGame": "New Scratch Game",
+    "empty": "No scratch games yet.",
+    "winChance": "Win chance: 30%",
+    "prizeRange": "Prizes: 5-50 points",
+    "createFor": "Create for customer",
+    "customerEmail": "Customer Email",
+    "customerEmailPlaceholder": "customer@example.com"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "customerLifetimeValue": "Customer Lifetime Value",
+    "clvDescription": "Average revenue per customer over their lifetime",
+    "churnRisk": "Churn Risk",
+    "churnDescription": "Customers at risk of not returning",
+    "programROI": "Program ROI",
+    "roiDescription": "Return on investment for your loyalty program",
+    "revenueLift": "Revenue Lift",
+    "revenueDescription": "Additional revenue from loyalty members",
+    "topCustomers": "Top Customers",
+    "noData": "No analytics data yet. Data will appear as customers interact with your programs."
+  },
+  "apiKeys": {
+    "title": "API & Widget",
+    "apiKeysSection": "API Keys",
+    "newKey": "Generate New Key",
+    "keyName": "Key Name",
+    "keyNamePlaceholder": "e.g. Production API Key",
+    "existingKeys": "Existing Keys",
+    "noKeys": "No API keys yet.",
+    "key": "Key",
+    "createdAt": "Created",
+    "widgetSection": "Embeddable Widget",
+    "widgetDesc": "Drop this into your site's HTML. It renders a join form and balance lookup.",
+    "copySnippet": "Copy Snippet"
+  },
+  "support": {
+    "title": "Contact Support",
+    "subtitle": "Have a question, issue, or feature request? We'd love to hear from you.",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "category": "Category",
+      "categories": {
+        "general": "General Question",
+        "bug": "Bug Report",
+        "feature": "Feature Request",
+        "billing": "Billing"
+      },
+      "subject": "Subject",
+      "subjectPlaceholder": "What is this about?",
+      "message": "Message",
+      "messagePlaceholder": "Tell us more...",
+      "submit": "Send Message",
+      "sending": "Sending..."
+    },
+    "success": "Message sent! We'll get back to you within 24 hours.",
+    "otherWays": "Other Ways to Reach Us"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "overview": "Platform Overview",
+    "subtitle": "LoyaltyForge platform health and metrics.",
+    "organizations": "Organizations",
+    "users": "Users",
+    "programs": "Programs",
+    "supportTickets": "Support Tickets",
+    "recentOrgs": "Recent Organizations",
+    "totalOrgs": "total organizations on the platform",
+    "totalUsers": "total users across all organizations",
+    "totalPrograms": "total programs across all organizations",
+    "noOrgs": "No organizations yet.",
+    "noUsers": "No users found.",
+    "noPrograms": "No programs found.",
+    "noTickets": "No tickets found.",
+    "ticketFilters": {
+      "all": "All",
+      "open": "Open",
+      "inProgress": "In Progress",
+      "resolved": "Resolved"
+    },
+    "ticketActions": {
+      "start": "Start",
+      "resolve": "Resolve",
+      "reopen": "Reopen"
+    }
+  },
+  "settings": {
+    "apiKeys": "API Keys"
+  }
+}

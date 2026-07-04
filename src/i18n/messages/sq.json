@@ -1,0 +1,447 @@
+{
+  "common": {
+    "appName": "LoyaltyForge",
+    "loading": "Duke ngarkuar...",
+    "error": "Gabim",
+    "success": "Sukses",
+    "save": "Ruaj",
+    "cancel": "Anulo",
+    "delete": "Fshi",
+    "edit": "Ndrysho",
+    "create": "Krijo",
+    "search": "Kërko",
+    "back": "Prapa",
+    "next": "Tjetër",
+    "confirm": "Konfirmo",
+    "yes": "Po",
+    "no": "Jo",
+    "none": "Asnjë",
+    "all": "Të gjitha",
+    "of": "nga",
+    "total": "Totali",
+    "status": "Statusi",
+    "actions": "Veprimet",
+    "details": "Detajet",
+    "close": "Mbyll",
+    "submit": "Dërgo",
+    "required": "I detyrueshëm",
+    "optional": "Opsional",
+    "name": "Emri",
+    "email": "Emaili",
+    "password": "Fjalëkalimi",
+    "createdAt": "Krijuar më",
+    "members": "Anëtarët",
+    "customers": "Klientët",
+    "programs": "Programet",
+    "transactions": "Transaksionet",
+    "points": "Pikët",
+    "stamps": "Pullat"
+  },
+  "nav": {
+    "dashboard": "Paneli",
+    "programs": "Programet",
+    "customers": "Klientët",
+    "rewards": "Shpërblimet",
+    "challenges": "SFIDAT",
+    "referrals": "Referimet",
+    "oneStamps": "Pulla Unike",
+    "scratchGames": "Lojërat Scratch",
+    "analytics": "Analitika",
+    "apiKeys": "API dhe Widget",
+    "settings": "Cilësimet",
+    "admin": "Paneli Admin",
+    "signOut": "Dilni",
+    "backToDashboard": "Kthehu tek Paneli"
+  },
+  "landing": {
+    "nav": {
+      "features": "Veçoritë",
+      "howItWorks": "Si Funksionon",
+      "pricing": "Çmimet",
+      "stories": "Tregimet",
+      "signIn": "Hyni",
+      "getStarted": "Fillojini Falas"
+    },
+    "hero": {
+      "badge": "Krijuar për kafene të pavarura",
+      "title1": "Kthejini Vizitorët e Herës së Parë në",
+      "titleHighlight": "Klientë të Rregullt",
+      "subtitle": "Platforma e besnikërisë për pronarët e kafeneve që duan të rriten pa pasur dyshime. Krijoni karta pullash, programe pikësh ose nivele VIP në minuta — jo muaj.",
+      "cta1": "Krijoni Programin Tuaj Falas",
+      "cta2": "Shihni Si Funksionon",
+      "stat1Value": "15-30%",
+      "stat1Label": "vizita më të përsëritura",
+      "stat2Value": "3x",
+      "stat2Label": "kthim nga investimi",
+      "stat3Value": "Falas",
+      "stat3Label": "për të filluar"
+    },
+    "brands": {
+      "title": "Besuar nga kafene në mbarë botën"
+    },
+    "howItWorks": {
+      "title": "Si Funksionon",
+      "subtitle": "I thjeshtë në dizajn",
+      "step1": {
+        "title": "Krijoni Programin Tuaj",
+        "desc": "Zgjidhni nga kartat me pulla, programet e pikëve ose anëtarësimet VIP me nivele. Vendosni rregullat tuaja, emërtuar shpërblimet tuaja dhe parashikoni gjithçka para se të publikoni."
+      },
+      "step2": {
+        "title": "Klientët Bashkohen",
+        "desc": "Ndani një kod QR unik në dyqan, vendosni një widget në faqen tuaj të internetit, ose lidhuni përmes API. Regjistrimi zgjat sekonda — nuk ka nevojë për shkarkim aplikacioni."
+      },
+      "step3": {
+        "title": "Shihni Besnikërinë të Rritet",
+        "desc": "Gjurmoni vizitat, tërhoqur dhe vlerën e jetës së klientit në kohë reale. Analitika tregon çfarë shpërblimesh dhe sfidash nxit më shumë angazhim."
+      }
+    },
+    "features": {
+      "title": "Gjithçka që Ju Nevojitet",
+      "subtitle": "Pavarësisht nëse drejtoni një dyqan të vetëm ose një zinxhir, LoyaltyForge ju jep mjetet për të ndërtuar një program që përshtatet me markën tuaj në mënyrë të përsosur.",
+      "stampCards": {
+        "title": "Kartat me Pulla",
+        "desc": "Karta klasike e pullave, e digitalizuar. Klientët mbledhin pulla me çdo blerje dhe shkëmbejnë shpërblimet në pragjet që vendosni."
+      },
+      "points": {
+        "title": "Ekonomia e Pikëve",
+        "desc": "Fitoni pikë për çdo dollar të shpenzuar. Lejoni klientët të shkëmbejnë për zbritje, sende falas ose artikuj ekskluzivë — plotësisht i konfigurueshëm."
+      },
+      "tiered": {
+        "title": "Nivelet VIP",
+        "desc": "Bronzi, Argjendi, Ari — shpërbleni shpenzuesit tuaj më të mëdhenj me përfitime në rritje. Nivelet hapen automatikisht bazuar në aktivitet."
+      },
+      "challenges": {
+        "title": "Sfidat dhe Arritjet",
+        "desc": "Bëjeni përvojën emocionuese. Vendosni sfida si \"Bëni 5 vizita radhazi\" dhe hapni medaljet e arritjeve që mbajnë klientët të angazhuar."
+      },
+      "rewards": {
+        "title": "Katalogu i Shpërblimeve",
+        "desc": "Kupona, sende falas, shpërblime përvojore, ose edhe donacione bamirësie. Ndërtoni një katalog që klientët tuaj dëshirojnë vërtet."
+      },
+      "scratch": {
+        "title": "Gërvisht dhe Fitoni",
+        "desc": "Karta gërvishjeje interaktive dixhitale pas çdo blerjeje. Kënaqësi e menjëhershme që nxit vizita të përsëritura."
+      }
+    },
+    "stats": {
+      "title": "Besnikëria që Paguan",
+      "subtitle": "Rezultate të provuara"
+    },
+    "integrations": {
+      "title": "Lidhet me Konfigurimin Tuaj Ekzistues"
+    },
+    "pricing": {
+      "title": "Filoni Falas, Rritni Kur jeni Gati",
+      "subtitle": "Nuk ka tarifa të fshehura. Nuk ka kontrata. Përditësoni ose ulni në çdo kohë.",
+      "starter": {
+        "name": "Filluesi",
+        "desc": "I përshtatshëm për të provuar"
+      },
+      "growth": {
+        "name": "Rritja",
+        "desc": "Për kafene gati për të rritur besnikërinë",
+        "popular": "Më i Popullori"
+      },
+      "scale": {
+        "name": "Shkallëzimi",
+        "desc": "Për operacione me shumë vendndodhje"
+      },
+      "cta": "Filoni Falas",
+      "ctaGrowing": "Filoni Rritjen",
+      "ctaContact": "Kontaktoni Shitjet"
+    },
+    "testimonials": {
+      "title": "Çfarë Thonë Klientët Tanë",
+      "subtitle": "Pronarë kafenesh të vërtetë"
+    },
+    "faq": {
+      "title": "Pyetjet e Bëra Më Shpesh",
+      "subtitle": "Pyetje të zakonshme"
+    },
+    "cta": {
+      "title": "Jeni Gati për të Ndërtuar Besnikërinë e Klientëve?",
+      "subtitle": "Bashkohuni me pronarët e kafeneve që po kthejnë blerësit e herës së parë në klientë të përjetshëm.",
+      "button": "Filoni Falas",
+      "note": "Falas për të filluar. Nuk ka nevojë për kartë krediti."
+    },
+    "footer": {
+      "product": "Produkti",
+      "company": "Kompania",
+      "legal": "Ligjore",
+      "contactSupport": "Kontaktoni Mbështetjen",
+      "getStarted": "Filoni Tani",
+      "signIn": "Hyni",
+      "features": "Veçoritë",
+      "pricing": "Çmimet",
+      "apiDocs": "API dhe Widget",
+      "copyright": "Të gjitha të drejtat e rezervuara. Krijuar për pronarët e kafeneve, jo për ndërmarrjet."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Mirë se vini përsëri",
+      "subtitle": "Hyni në llogarinë tuaj",
+      "emailPlaceholder": "ju@example.com",
+      "passwordPlaceholder": "Vendosni fjalëkalimin",
+      "submit": "Hyni",
+      "noAccount": "Nuk keni llogari?",
+      "createOne": "Krijoni një"
+    },
+    "register": {
+      "title": "Krijoni llogarinë tuaj",
+      "subtitle": "Filloni të ndërtoni besnikërinë në minuta",
+      "cafeName": "Emri i Kafenesë / Biznesit",
+      "cafeNamePlaceholder": "p.sh. Kafene Dielli",
+      "slug": "Slug URL-je",
+      "slugPlaceholder": "kafene-dielli",
+      "emailPlaceholder": "ju@example.com",
+      "passwordPlaceholder": "Krijoni fjalëkalim",
+      "submit": "Krijoni Llogarinë",
+      "hasAccount": "Keni tashmë një llogari?",
+      "signIn": "Hyni"
+    }
+  },
+  "dashboard": {
+    "welcome": "Mirë se vini përsëri",
+    "overview": "Ja çfarë po ndodh me programet tuaja të besnikërisë.",
+    "totalMembers": "Gjithsej Anëtarë",
+    "activePrograme": "Programe Aktive",
+    "totalPointsIssued": "Gjithsej Pikë të Lëshuara",
+    "recentActivity": "Aktiviteti i Fundit",
+    "noActivity": "Nuk ka aktivitet të fundit"
+  },
+  "programs": {
+    "title": "Programet e Besnikërisë",
+    "new": "Program i Ri",
+    "empty": "Nuk ka programe ende. Krijoni programin tuaj të parë të besnikërisë për të filluar.",
+    "types": {
+      "STAMP": "Kartë Pullash",
+      "POINTS": "Pikë",
+      "TIERED": "Nivele VIP"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Publikuar",
+      "PAUSED": "Pauzuar"
+    },
+    "newPage": {
+      "title": "Krijoni Program të Ri",
+      "name": "Emri i Programit",
+      "namePlaceholder": "p.sh. Kartë Pullash Verore",
+      "type": "Lloji i Programit",
+      "typeDescription": "Zgjidhni se si klientët fitojnë shpërblime",
+      "create": "Krijoni Programin"
+    },
+    "detail": {
+      "enrolled": "të regjistruar",
+      "transactions": "transaksione",
+      "programId": "ID e Programit",
+      "type": "Lloji",
+      "status": "Statusi",
+      "members": "Anëtarët",
+      "qrTitle": "Kodi QR për Bashkim",
+      "qrDesc": "Skano këtë kod QR për t'u bashkuar me programin e besnikërisë",
+      "apiTitle": "Integrimi API",
+      "apiDesc": "Përdorni këto pika për integrim me POS-in tuaj",
+      "earnEndpoint": "Jepni Pikë",
+      "redeemEndpoint": "Tërhiqni Pikë",
+      "balanceEndpoint": "Kontrolloni Bilancin"
+    }
+  },
+  "customers": {
+    "title": "Klientët",
+    "empty": "Nuk ka klientë ende. Do të shfaqen këtu kur të bashkohen me programet tuaja.",
+    "search": "Kërko me emër ose email...",
+    "columns": {
+      "email": "Emaili",
+      "name": "Emri",
+      "joined": "Bashkuar më",
+      "balance": "Bilanci"
+    },
+    "detail": {
+      "title": "Detajet e Klientit",
+      "email": "Emaili",
+      "joined": "Bashkuar më",
+      "totalCustomers": "Gjithsej Klientë",
+      "programsEnrolled": "Programe të Regjistruara",
+      "totalBalance": "Bilanci Total",
+      "loyaltyCards": "Kartat e Besnikërisë",
+      "noCards": "Nuk ka karta besnikërie ende.",
+      "transactions": "Transaksionet",
+      "noTransactions": "Nuk ka transaksione ende."
+    }
+  },
+  "rewards": {
+    "title": "Katalogu i Shpërblimeve",
+    "newReward": "Shpërblim i Ri",
+    "empty": "Nuk ka shpërblime ende. Krijoni shpërblime që klientët mund të tërheqin.",
+    "types": {
+      "COUPON": "Kupon",
+      "FREE_PRODUCT": "Produkt Falas",
+      "FREE_SHIPPING": "Dërgesë Falas",
+      "EXPERIENTIAL": "Hyrje përvojore",
+      "CHARITY_DONATION": "Donacion Bamirësie",
+      "STORE_CREDIT": "Kredi Dyqani"
+    },
+    "form": {
+      "title": "Krijoni Shpërblim",
+      "name": "Emri i Shpërblimit",
+      "namePlaceholder": "p.sh. Latte Falas",
+      "description": "Përshkrimi",
+      "descriptionPlaceholder": "Çfarë merr klienti",
+      "type": "Lloji i Shpërblimit",
+      "cost": "Kostoja (pikë)",
+      "costPlaceholder": "100",
+      "stock": "Stoku (opsional)",
+      "stockPlaceholder": "Lëreni bosh për të pakufizuar",
+      "charityName": "Emri i Bamirësisë",
+      "charityUrl": "URL-ja e Bamirësisë"
+    }
+  },
+  "challenges": {
+    "title": "Sfidat dhe Arritjet",
+    "newChallenge": "Sfide e Re",
+    "empty": "Nuk ka sfida ende. Krijoni sfida për ta bërë programin e besnikërisë emocionues.",
+    "types": {
+      "VISIT_COUNT": "Numri i Vizitave",
+      "SPEND_AMOUNT": "Shuma e Shpenzuar",
+      "STREAK": "Rradhë",
+      "REFERRAL_COUNT": "Numri i Referimeve",
+      "BIRTHDAY": "Ditëlindja",
+      "CUSTOM": "E Personalizuar"
+    },
+    "progress": "{completed} përfunduar",
+    "form": {
+      "title": "Krijoni Sfidë",
+      "name": "Emri i SFIDës",
+      "namePlaceholder": "p.sh. Bëni 5 Vizita",
+      "description": "Përshkrimi",
+      "descriptionPlaceholder": "Çfarë duhet të bëjnë klientët",
+      "type": "Lloji i SFIDës",
+      "target": "Vlera e Synuar",
+      "targetPlaceholder": "5",
+      "rewardPoints": "Pikë Shpërblimi",
+      "rewardPointsPlaceholder": "100",
+      "badgeName": "Emri i Medaljes (opsional)",
+      "badgeNamePlaceholder": "p.sh. Hero Lokal"
+    }
+  },
+  "referrals": {
+    "title": "Sistemi i Referimeve",
+    "empty": "Nuk ka referime ende.",
+    "yourCode": "Kodi Juaj i Referimit",
+    "copyCode": "Kopjoni Kodin",
+    "stats": "Statistikat e Referimeve",
+    "totalReferrals": "Gjithsej Referime",
+    "completed": "Përfunduar",
+    "pending": "Në Pritje",
+    "bonusPoints": "Pikë Bonus të Dhëna",
+    "recentReferrals": "Referimet e Fundit"
+  },
+  "oneStamps": {
+    "title": "Pulla Unike",
+    "subtitle": "Kode QR për përdorim të vetëm për shpërblime një herë",
+    "generate": "Gjeneroni Pulla Unike",
+    "quantity": "Numri për gjenerim",
+    "pointsPerStamp": "Pikë për pullë",
+    "empty": "Nuk ka pulla unike ende.",
+    "code": "Kodi",
+    "points": "Pikët",
+    "status": "Statusi",
+    "used": "Përdorur",
+    "available": "I disponueshëm"
+  },
+  "scratchGames": {
+    "title": "Lojërat Gërvishje dhe Fitim",
+    "newGame": "Lojë e Re Gërvishjeje",
+    "empty": "Nuk ka lojëra gërvishjeje ende.",
+    "winChance": "Mundësia për të fituar: 30%",
+    "prizeRange": "Shpërblimet: 5-50 pikë",
+    "createFor": "Krijoni për klientin",
+    "customerEmail": "Emaili i Klientit",
+    "customerEmailPlaceholder": "klienti@example.com"
+  },
+  "analytics": {
+    "title": "Analitika",
+    "customerLifetimeValue": "Vlera e Jetës së Klientit",
+    "clvDescription": "Të ardhurat mesatare për klient gjatë jetës së tij",
+    "churnRisk": "Rreziku i Humbjes së Klientëve",
+    "churnDescription": "Klientët në rrezik të mos kthehen",
+    "programROI": "Kthimi i Investimit",
+    "roiDescription": "Kthimi nga investimi në programin tuaj të besnikërisë",
+    "revenueLift": "Rritja e Të Ardhurave",
+    "revenueDescription": "Të ardhura shtesë nga anëtarët e besnikërisë",
+    "topCustomers": "Klientët Kryesorë",
+    "noData": "Nuk ka të dhëna analitike ende. Të dhënat do të shfaqen kur klientët të ndërveprojnë me programet tuaja."
+  },
+  "apiKeys": {
+    "title": "API dhe Widget",
+    "apiKeysSection": "Çelësat API",
+    "newKey": "Gjeneroni Çelës të Ri",
+    "keyName": "Emri i Çelësit",
+    "keyNamePlaceholder": "p.sh. Çelës API për Produksion",
+    "existingKeys": "Çelësat Ekzistues",
+    "noKeys": "Nuk ka çelësa API ende.",
+    "key": "Çelësi",
+    "createdAt": "Krijuar më",
+    "widgetSection": "Widget i Përshtatshëm",
+    "widgetDesc": "Shtojeni këtë në HTML-në e faqes tuaj. Shfaq një formë bashkimi dhe kërkimi bilanci.",
+    "copySnippet": "Kopjoni Kodin"
+  },
+  "support": {
+    "title": "Kontaktoni Mbështetjen",
+    "subtitle": "Keni një pyetje, çështje ose kërkesë për veçori? Dëshirojmë të dëgjojmë nga ju.",
+    "form": {
+      "name": "Emri",
+      "namePlaceholder": "Emri juaj",
+      "email": "Emaili",
+      "emailPlaceholder": "ju@example.com",
+      "category": "Kategoria",
+      "categories": {
+        "general": "Pyetje e Përgjithshme",
+        "bug": "Raport Gabimi",
+        "feature": "Kërkesë për Veçori",
+        "billing": "Faturimi"
+      },
+      "subject": "Subjekti",
+      "subjectPlaceholder": "Për çfarë bëhet fjalë?",
+      "message": "Mesazhi",
+      "messagePlaceholder": "Na tregoni më shumë...",
+      "submit": "Dërgoni Mesazhin",
+      "sending": "Duke dërguar..."
+    },
+    "success": "Mesazhi u dërgua! Do t'ju përgjigjemi brenda 24 orëve.",
+    "otherWays": "Mënyra të tjera për të na Kontaktuar"
+  },
+  "admin": {
+    "title": "Paneli Admin",
+    "overview": "Pamja e Përgjithshme e Platformës",
+    "subtitle": "Shëndeti dhe metrikat e platformës LoyaltyForge.",
+    "organizations": "Organizatat",
+    "users": "Përdoruesit",
+    "programs": "Programet",
+    "supportTickets": "Biletat e Mbështetjes",
+    "recentOrgs": "Organizatat e Fundit",
+    "totalOrgs": "gjithsej organizata në platformë",
+    "totalUsers": "gjithsej përdorues në të gjitha organizatat",
+    "totalPrograms": "gjithsej programe në të gjitha organizatat",
+    "noOrgs": "Nuk ka organizata ende.",
+    "noUsers": "Nuk u gjetën përdorues.",
+    "noPrograms": "Nuk u gjetën programe.",
+    "noTickets": "Nuk u gjetën bileta.",
+    "ticketFilters": {
+      "all": "Të gjitha",
+      "open": "Hapur",
+      "inProgress": "Në Përpunim",
+      "resolved": "Zgjidhur"
+    },
+    "ticketActions": {
+      "start": "Fillo",
+      "resolve": "Zgjidh",
+      "reopen": "Rihap"
+    }
+  },
+  "settings": {
+    "apiKeys": "Çelësat API"
+  }
+}

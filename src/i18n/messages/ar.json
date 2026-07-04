@@ -1,0 +1,447 @@
+{
+  "common": {
+    "appName": "لوالتي فورج",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "search": "بحث",
+    "back": "رجوع",
+    "next": "التالي",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا",
+    "none": "لا شيء",
+    "all": "الكل",
+    "of": "من",
+    "total": "المجموع",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "details": "التفاصيل",
+    "close": "إغلاق",
+    "submit": "إرسال",
+    "required": "مطلوب",
+    "optional": "اختياري",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "createdAt": "تاريخ الإنشاء",
+    "members": "الأعضاء",
+    "customers": "العملاء",
+    "programs": "البرامج",
+    "transactions": "المعاملات",
+    "points": "النقاط",
+    "stamps": "الطوابع"
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "programs": "البرامج",
+    "customers": "العملاء",
+    "rewards": "المكافآت",
+    "challenges": "التحديات",
+    "referrals": "إحالات",
+    "oneStamps": "طوابع أحادية",
+    "scratchGames": "ألعاب الخدش",
+    "analytics": "التحليلات",
+    "apiKeys": "API والودجت",
+    "settings": "الإعدادات",
+    "admin": "لوحة الإدارة",
+    "signOut": "تسجيل الخروج",
+    "backToDashboard": "العودة للوحة التحكم"
+  },
+  "landing": {
+    "nav": {
+      "features": "الميزات",
+      "howItWorks": "كيف يعمل",
+      "pricing": "الأسعار",
+      "stories": "القصص",
+      "signIn": "تسجيل الدخول",
+      "getStarted": "ابدأ مجاناً"
+    },
+    "hero": {
+      "badge": "مصمم للمقاهي المستقلة",
+      "title1": "حوّل الزوار للمرة الأولى إلى",
+      "titleHighlight": "عملاء دائمين",
+      "subtitle": "منصة ولاء مصممة لأصحاب المقاهي الذين يريدون النمو بدون تخمين. أنشئ بطاقات طوابع أو نقاط أو فئات VIP في دقائق — لا أشهر.",
+      "cta1": "أنشئ برنامجك مجاناً",
+      "cta2": "شاهد كيف يعمل",
+      "stat1Value": "15-30%",
+      "stat1Label": "زيادة في الزيارات المتكررة",
+      "stat2Value": "3x",
+      "stat2Label": "عائد الاستثمار",
+      "stat3Value": "مجاني",
+      "stat3Label": "للبدء"
+    },
+    "brands": {
+      "title": "موثوق من مقاهي حول العالم"
+    },
+    "howItWorks": {
+      "title": "كيف يعمل",
+      "subtitle": "بسيط بالتصميم",
+      "step1": {
+        "title": "أنشئ برنامجك",
+        "desc": "اختر من بطاقات الطوابع أو برامج النقاط أو فئات VIP. حدد قواعدك واسم مكافآتك ومعاينة كل شيء قبل النشر."
+      },
+      "step2": {
+        "title": "العملاء ينضمون",
+        "desc": "شارك رمز QR فريداً في المتجر، أو أدرج ودجت على موقعك، أو اتصل عبر API. الاستلام في ثوانٍ — لا حاجة لتحميل تطبيق."
+      },
+      "step3": {
+        "title": "شاهد الولاء ينمو",
+        "desc": "تتبع الزيارات والاستردادات وقيمة العميل مدى الحياة. تُظهر التحليلات ما يثير أكبر قدر من التفاعل."
+      }
+    },
+    "features": {
+      "title": "كل ما تحتاجه",
+      "subtitle": "سواء كنت تدير متجر واحد أو سلسلة، يوفر لك LoyaltyForge الأدوات لبناء برنامج يناسب علامتك التجارية.",
+      "stampCards": {
+        "title": "بطاقات الطوابع",
+        "desc": "بطاقة الكلاسيكية الرقمية. يجمع العملاء الطوابع مع كل شراء ويستبدلون المكافآت عند العدد المحدد."
+      },
+      "points": {
+        "title": "اقتصاد النقاط",
+        "desc": "اكسب نقاطاً لكل دولار تنفقه. دع العملاء يستبدلونها بخصومات أو منتجات مجانية — قابل للتكوين بالكامل."
+      },
+      "tiered": {
+        "title": "فئات VIP",
+        "desc": "برونزي، فضي، ذهبي — مكافأة أكبر المصروفين بمزايا تصاعدية. تُفتح الفئات تلقائياً بناءً على النشاط."
+      },
+      "challenges": {
+        "title": "التحديات والمراحل",
+        "desc": "جعل التجربة ممتعة. حدد تحديات مثل \"قم بزيارة 5 أيام متتالية\" وافتح شارات المراحل."
+      },
+      "rewards": {
+        "title": "كتالوج المكافآت",
+        "desc": "قسائم، منتجات مجانية، مكافآت تجريبية، أو حتى تبرعات خيرية. ابنِ كتالوجاً يريده عملاؤك فعلاً."
+      },
+      "scratch": {
+        "title": "خدش واربح",
+        "desc": "بطاقات خدش رقمية تفاعلية بعد كل شراء. رضا فوري يدفع للزيارات المتكررة."
+      }
+    },
+    "stats": {
+      "title": "الولاء الذي يُثمر",
+      "subtitle": "نتائج مثبتة"
+    },
+    "integrations": {
+      "title": "يتصل بإعدادك الحالي"
+    },
+    "pricing": {
+      "title": "ابدأ مجاناً، توسع عندما تتأكد",
+      "subtitle": "لا رسوم خفية. لا عقود. قم بالترقية أو التخفيض في أي وقت.",
+      "starter": {
+        "name": "المبتدئ",
+        "desc": "مثالي لاختبار الماء"
+      },
+      "growth": {
+        "name": "النمو",
+        "desc": "للمقاهي الجاهزة لتوسيع الولاء",
+        "popular": "الأكثر شعبية"
+      },
+      "scale": {
+        "name": "التوسع",
+        "desc": "للعمليات متعددة المواقع"
+      },
+      "cta": "ابدأ مجاناً",
+      "ctaGrowing": "ابدأ النمو",
+      "ctaContact": "تواصل مع المبيعات"
+    },
+    "testimonials": {
+      "title": "ماذا يقول عملاؤنا",
+      "subtitle": "أصحاب مقاهي حقيقيون"
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "subtitle": "أسئلة متكررة"
+    },
+    "cta": {
+      "title": "هل أنت مستعد لبناء ولاء العملاء؟",
+      "subtitle": "انضم لأصحاب المقاهي الذين يحوّلون المشترين لمرة واحدة إلى عملاء دائمين.",
+      "button": "ابدأ مجاناً",
+      "note": "مجاني للبدء. لا حاجة لبطاقة ائتمان."
+    },
+    "footer": {
+      "product": "المنتج",
+      "company": "الشركة",
+      "legal": "قانوني",
+      "contactSupport": "تواصل مع الدعم",
+      "getStarted": "ابدأ الآن",
+      "signIn": "تسجيل الدخول",
+      "features": "الميزات",
+      "pricing": "الأسعار",
+      "apiDocs": "API والودجت",
+      "copyright": "جميع الحقوق محفوظة. مصمم لأصحاب المقاهي، لا للمؤسسات."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "مرحباً بعودتك",
+      "subtitle": "سجّل الدخول إلى حسابك",
+      "emailPlaceholder": "you@example.com",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "noAccount": "ليس لديك حساب؟",
+      "createOne": "أنشئ واحداً"
+    },
+    "register": {
+      "title": "أنشئ حسابك",
+      "subtitle": "ابدأ في بناء الولاء في دقائق",
+      "cafeName": "اسم المقهى / النشاط",
+      "cafeNamePlaceholder": "مثال: مقهى الشروق",
+      "slug": "الرابط المختصر",
+      "slugPlaceholder": "sunrise-coffee",
+      "emailPlaceholder": "you@example.com",
+      "passwordPlaceholder": "أنشئ كلمة مرور",
+      "submit": "إنشاء الحساب",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signIn": "سجّل الدخول"
+    }
+  },
+  "dashboard": {
+    "welcome": "مرحباً بعودتك",
+    "overview": "إليك ما يحدث مع برامج الولاء.",
+    "totalMembers": "إجمالي الأعضاء",
+    "activePrograms": "البرامج النشطة",
+    "totalPointsIssued": "إجمالي النقاط المُصدرة",
+    "recentActivity": "النشاط الأخير",
+    "noActivity": "لا نشاط حديث"
+  },
+  "programs": {
+    "title": "برامج الولاء",
+    "new": "برنامج جديد",
+    "empty": "لا توجد برامج بعد. أنشئ أول برنامج ولاء للبدء.",
+    "types": {
+      "STAMP": "بطاقة طوابع",
+      "POINTS": "نقاط",
+      "TIERED": "فئات VIP"
+    },
+    "status": {
+      "DRAFT": "مسودة",
+      "PUBLISHED": "منشور",
+      "PAUSED": "متوقف مؤقتاً"
+    },
+    "newPage": {
+      "title": "إنشاء برنامج جديد",
+      "name": "اسم البرنامج",
+      "namePlaceholder": "مثال: بطاقة طابع صيفية",
+      "type": "نوع البرنامج",
+      "typeDescription": "اختر كيف يكسب العملاء المكافآت",
+      "create": "إنشاء البرنامج"
+    },
+    "detail": {
+      "enrolled": "مسجل",
+      "transactions": "معاملات",
+      "programId": "معرف البرنامج",
+      "type": "النوع",
+      "status": "الحالة",
+      "members": "الأعضاء",
+      "qrTitle": "رمز QR للانضمام",
+      "qrDesc": "امسح رمز QR هذا للانضمام لبرنامج الولاء",
+      "apiTitle": "تكامل API",
+      "apiDesc": "استخدم هذه النقاط للتكامل مع نقاط البيع",
+      "earnEndpoint": "منح النقاط",
+      "redeemEndpoint": "استرداد النقاط",
+      "balanceEndpoint": "التحقق من الرصيد"
+    }
+  },
+  "customers": {
+    "title": "العملاء",
+    "empty": "لا عملاء بعد. سيظهرون هنا عندما ينضمون لبرامجك.",
+    "search": "بحث بالاسم أو البريد...",
+    "columns": {
+      "email": "البريد الإلكتروني",
+      "name": "الاسم",
+      "joined": "تاريخ الانضمام",
+      "balance": "الرصيد"
+    },
+    "detail": {
+      "title": "تفاصيل العميل",
+      "email": "البريد الإلكتروني",
+      "joined": "تاريخ الانضمام",
+      "totalCustomers": "إجمالي العملاء",
+      "programsEnrolled": "البرامج المسجلة",
+      "totalBalance": "إجمالي الرصيد",
+      "loyaltyCards": "بطاقات الولاء",
+      "noCards": "لا توجد بطاقات ولاء بعد.",
+      "transactions": "المعاملات",
+      "noTransactions": "لا توجد معاملات بعد."
+    }
+  },
+  "rewards": {
+    "title": "كتالوج المكافآت",
+    "newReward": "مكافأة جديدة",
+    "empty": "لا توجد مكافآت بعد. أنشئ مكافآت يمكن للعملاء استردادها.",
+    "types": {
+      "COUPON": "قسيمة",
+      "FREE_PRODUCT": "منتج مجاني",
+      "FREE_SHIPPING": "شحن مجاني",
+      "EXPERIENTIAL": "وصول تجريبي",
+      "CHARITY_DONATION": "تبرع خيري",
+      "STORE_CREDIT": "رصيد متجر"
+    },
+    "form": {
+      "title": "إنشاء مكافأة",
+      "name": "اسم المكافأة",
+      "namePlaceholder": "مثال: لاتيه مجاني",
+      "description": "الوصف",
+      "descriptionPlaceholder": "ما يحصل عليه العميل",
+      "type": "نوع المكافأة",
+      "cost": "التكلفة (نقاط)",
+      "costPlaceholder": "100",
+      "stock": "المخزون (اختياري)",
+      "stockPlaceholder": "اترك فارغاً لغير محدود",
+      "charityName": "اسم الخيرية",
+      "charityUrl": "رابط الخيرية"
+    }
+  },
+  "challenges": {
+    "title": "التحديات والمراحل",
+    "newChallenge": "تحدي جديد",
+    "empty": "لا توجد تحديات بعد. أنشئ تحديات لجعل برنامج الولاء ممتعاً.",
+    "types": {
+      "VISIT_COUNT": "عدد الزيارات",
+      "SPEND_AMOUNT": "مبلغ المصروف",
+      "STREAK": "سلسلة",
+      "REFERRAL_COUNT": "عدد الإحالات",
+      "BIRTHDAY": "عيد الميلاد",
+      "CUSTOM": "مخصص"
+    },
+    "progress": "{completed} مكتمل",
+    "form": {
+      "title": "إنشاء تحدي",
+      "name": "اسم التحدي",
+      "namePlaceholder": "مثال: قم بزيارة 5 مرات",
+      "description": "الوصف",
+      "descriptionPlaceholder": "ماذا يحتاج العملاء لفعله",
+      "type": "نوع التحدي",
+      "target": "القيمة المستهدفة",
+      "targetPlaceholder": "5",
+      "rewardPoints": "نقاط المكافأة",
+      "rewardPointsPlaceholder": "100",
+      "badgeName": "اسم الشارة (اختياري)",
+      "badgeNamePlaceholder": "مثال: بطل محلي"
+    }
+  },
+  "referrals": {
+    "title": "نظام الإحالات",
+    "empty": "لا توجد إحالات بعد.",
+    "yourCode": "كود الإحالة الخاص بك",
+    "copyCode": "نسخ الكود",
+    "stats": "إحصائيات الإحالات",
+    "totalReferrals": "إجمالي الإحالات",
+    "completed": "مكتمل",
+    "pending": "قيد الانتظار",
+    "bonusPoints": "نقاط مكافأة مُنحت",
+    "recentReferrals": "الإحالات الأخيرة"
+  },
+  "oneStamps": {
+    "title": "طوابع أحادية",
+    "subtitle": "رموز QR لاستخدام واحد لمكافآت لمرة واحدة",
+    "generate": "إنشاء طوابع أحادية",
+    "quantity": "عدد للإنشاء",
+    "pointsPerStamp": "نقاط لكل طابع",
+    "empty": "لا توجد طوابع أحادية بعد.",
+    "code": "الكود",
+    "points": "النقاط",
+    "status": "الحالة",
+    "used": "مستخدم",
+    "available": "متاح"
+  },
+  "scratchGames": {
+    "title": "ألعاب الخدش والربح",
+    "newGame": "لعبة خدش جديدة",
+    "empty": "لا توجد ألعاب خدش بعد.",
+    "winChance": "فرصة الفوز: 30%",
+    "prizeRange": "المكافآت: 5-50 نقطة",
+    "createFor": "إنشاء لعميل",
+    "customerEmail": "بريد العميل",
+    "customerEmailPlaceholder": "customer@example.com"
+  },
+  "analytics": {
+    "title": "التحليلات",
+    "customerLifetimeValue": "قيمة العميل مدى الحياة",
+    "clvDescription": "متوسط الإيرادات لكل عميل على مدى حياته",
+    "churnRisk": "خطر فقدان العملاء",
+    "churnDescription": "العملاء المعرضون لعدم العودة",
+    "programROI": "عائد الاستثمار",
+    "roiDescription": "عائد الاستثمار في برنامج الولاء",
+    "revenueLift": "زيادة الإيرادات",
+    "revenueDescription": "الإيرادات الإضافية من أعضاء الولاء",
+    "topCustomers": "أكبر العملاء",
+    "noData": "لا توجد بيانات تحليلات بعد. ستظهر البيانات عندما يتفاعل العملاء مع برامجك."
+  },
+  "apiKeys": {
+    "title": "API والودجت",
+    "apiKeysSection": "مفاتيح API",
+    "newKey": "إنشاء مفتاح جديد",
+    "keyName": "اسم المفتاح",
+    "keyNamePlaceholder": "مثال: مفتاح API للإنتاج",
+    "existingKeys": "المفاتيح الموجودة",
+    "noKeys": "لا توجد مفاتيح API بعد.",
+    "key": "المفتاح",
+    "createdAt": "تاريخ الإنشاء",
+    "widgetSection": "الودجت القابل للدمج",
+    "widgetDesc": "أضف هذا إلى HTML موقعك. يعرض نموذج انضمام وبحث عن الرصيد.",
+    "copySnippet": "نسخ الكود"
+  },
+  "support": {
+    "title": "تواصل مع الدعم",
+    "subtitle": "لديك سؤال أو مشكلة أو طلب ميزة؟ نحب أن نسمع منك.",
+    "form": {
+      "name": "الاسم",
+      "namePlaceholder": "اسمك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "category": "الفئة",
+      "categories": {
+        "general": "سؤال عام",
+        "bug": "تقرير خطأ",
+        "feature": "طلب ميزة",
+        "billing": "الفواتير"
+      },
+      "subject": "الموضوع",
+      "subjectPlaceholder": "ما موضوع هذه الرسالة؟",
+      "message": "الرسالة",
+      "messagePlaceholder": "أخبرنا المزيد...",
+      "submit": "إرسال الرسالة",
+      "sending": "جاري الإرسال..."
+    },
+    "success": "تم إرسال الرسالة! سنتواصل معك خلال 24 ساعة.",
+    "otherWays": "طرق أخرى للتواصل"
+  },
+  "admin": {
+    "title": "لوحة الإدارة",
+    "overview": "نظرة عامة على المنصة",
+    "subtitle": "صحة ومنافع منصة LoyaltyForge.",
+    "organizations": "المنظمات",
+    "users": "المستخدمون",
+    "programs": "البرامج",
+    "supportTickets": "تذاكر الدعم",
+    "recentOrgs": "المنظمات الأخيرة",
+    "totalOrgs": "إجمالي المنظمات على المنصة",
+    "totalUsers": "إجمالي المستخدمين عبر جميع المنظمات",
+    "totalPrograms": "إجمالي البرامج عبر جميع المنظمات",
+    "noOrgs": "لا توجد منظمات بعد.",
+    "noUsers": "لم يتم العثور على مستخدمين.",
+    "noPrograms": "لم يتم العثور على برامج.",
+    "noTickets": "لم يتم العثور على تذاكر.",
+    "ticketFilters": {
+      "all": "الكل",
+      "open": "مفتوحة",
+      "inProgress": "قيد المعالجة",
+      "resolved": "محلولة"
+    },
+    "ticketActions": {
+      "start": "بدء",
+      "resolve": "حل",
+      "reopen": "إعادة فتح"
+    }
+  },
+  "settings": {
+    "apiKeys": "مفاتيح API"
+  }
+}
