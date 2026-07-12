@@ -1,7 +1,22 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrgContext } from "@/lib/auth";
-import { ProgramAnalyticsChart } from "@/components/program-analytics-chart";
+
+// Lazy-load the recharts-based chart so the ~95KB recharts bundle is only
+// loaded on the dashboard page, not on every page that imports from this
+// route group. ssr: false because recharts uses window measurements.
+const ProgramAnalyticsChart = dynamic(
+  () => import("@/components/program-analytics-chart").then((m) => m.default),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-72 items-center justify-center text-sm text-espresso/40">
+        Loading chart…
+      </div>
+    ),
+  }
+);
 
 const ASSUMED_AVG_TICKET = 7.5;
 const INCREMENTAL_VISIT_FACTOR = 0.4;

@@ -28,6 +28,11 @@ model Organization {
   id             String           @id @default(cuid())
   name           String
   slug           String           @unique
+  // Widget-facing shared secret (bcrypt hash). Gates public widget endpoints
+  // that return customer PII (balance, tier). Rotated by org owner.
+  widgetSecretHash String?
+  // Comma-separated CORS allowlist for this org's public widget endpoints.
+  allowedOrigins  String?
   createdAt      DateTime         @default(now())
   memberships    Membership[]
   programs       LoyaltyProgram[]
@@ -169,11 +174,38 @@ model ApiKey {
   name           String
   prefix         String
   hashedKey      String       @unique
+  // Fast HMAC-SHA256 lookup hash of the raw key, indexed. Used to locate
+  // the candidate row in O(1) before running the expensive bcrypt.compare.
+  // Nullable so existing rows survive the migration; authenticateApiKey
+  // has a slow fallback for NULL rows and backfills them on first use.
+  keyLookupHash  String?      @unique
   createdAt      DateTime     @default(now())
   lastUsedAt     DateTime?
   revoked        Boolean      @default(false)
 
   @@index([organizationId])
+}
+
+// ---------------------------------------------------------------------------
+// Idempotency
+// ---------------------------------------------------------------------------
+
+model IdempotencyKey {
+  id             String   @id @default(cuid())
+  organizationId String
+  // The client-supplied idempotency key (from the Idempotency-Key header).
+  // Unique per org so two orgs can reuse the same key without colliding.
+  key            String
+  // The API route that created this record (e.g. "v1:earn", "v1:redeem").
+  // Stored so a key minted for earn can't be replayed against redeem.
+  endpoint       String
+  // The full JSON response body, replayed verbatim on a repeat request.
+  responseBody   String
+  responseStatus Int
+  createdAt      DateTime @default(now())
+
+  @@unique([organizationId, key])
+  @@index([organizationId, endpoint])
 }
 
 // ---------------------------------------------------------------------------

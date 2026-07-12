@@ -1,14 +1,24 @@
 import { getOrganizations } from "@/lib/actions-admin";
+import { Pagination } from "@/components/pagination";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOrganizationsPage() {
-  const orgs = await getOrganizations();
+const PAGE_SIZE = 50;
+
+export default async function AdminOrganizationsPage({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
+  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
+  const { orgs, total, totalPages } = await getOrganizations({ page, pageSize: PAGE_SIZE });
 
   return (
     <div>
       <h1 className="font-display text-2xl font-semibold text-espresso">Organizations</h1>
-      <p className="mt-1 text-sm text-espresso/60">{orgs.length} total organizations on the platform.</p>
+      <p className="mt-1 text-sm text-espresso/60">
+        {total} total organizations · page {page} of {totalPages}
+      </p>
 
       <div className="mt-8 overflow-x-auto">
         <table className="w-full text-left text-sm">
@@ -42,6 +52,8 @@ export default async function AdminOrganizationsPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} basePath="/admin/organizations" />
     </div>
   );
 }

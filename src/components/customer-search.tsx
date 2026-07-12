@@ -16,15 +16,35 @@ export function CustomerSearch({ initialValue }: { initialValue: string }) {
 
   return (
     <form onSubmit={onSubmit} className="flex max-w-md gap-2">
-      <input
-        className="input"
-        placeholder="Search by name, email, or phone…"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <div className="flex-1">
+        <label htmlFor="customer-search" className="sr-only">
+          Search customers by name, email, or phone
+        </label>
+        <input
+          id="customer-search"
+          type="search"
+          className="input"
+          placeholder="Search by name, email, or phone…"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          aria-label="Search customers"
+        />
+      </div>
       <button type="submit" className="btn-secondary shrink-0">
         Search
       </button>
+      {value && (
+        <button
+          type="button"
+          className="btn-secondary shrink-0 text-xs"
+          onClick={() => {
+            setValue("");
+            router.push("/customers");
+          }}
+        >
+          Clear
+        </button>
+      )}
     </form>
   );
 }

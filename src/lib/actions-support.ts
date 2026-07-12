@@ -1,6 +1,19 @@
 "use server";
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { headers } from "next/headers";
+
+const TICKET_CATEGORIES = ["general", "bug", "feature", "billing"] as const;
+const MAX_MESSAGE_LEN = 10_000;
+
+const schema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(120),
+  email: z.string().trim().email("Please enter a valid email address").max(254),
+  subject: z.string().trim().min(1, "Subject is required").max(200),
+  category: z.enum(TICKET_CATEGORIES).default("general"),
+  message: z.string().trim().min(1, "Message is required").max(MAX_MESSAGE_LEN),
+});
 
 export async function submitSupportTicket(input: {
   name: string;
@@ -9,48 +22,32 @@ export async function submitSupportTicket(input: {
   category: string;
   message: string;
 }): Promise<{ error?: string; id?: string }> {
-  if (!input.name || !input.email || !input.subject || !input.message) {
-    return { error: "All fields are required." };
+  const parsed = schema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
-  if (!input.email.includes("@") || !input.email.includes(".")) {
-    return { error: "Please enter a valid email address." };
+  try {
+    const hdrs = headers();
+    const ip =
+      hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      hdrs.get("x-real-ip") ??
+      null;
+
+    const ticket = await prisma.supportTicket.create({
+      data: {
+        name: parsed.data.name,
+        email: parsed.data.email,
+        subject: parsed.data.subject,
+        category: parsed.data.category,
+        message: parsed.data.message,
+      },
+    });
+
+    console.log(`[support] ticket ${ticket.id} filed by ${parsed.data.email} (ip=${ip ?? "unknown"})`);
+    return { id: ticket.id };
+  } catch (err) {
+    console.error("[support] submitSupportTicket failed", err);
+    return { error: "Could not submit your ticket. Please try again later." };
   }
-
-  const validCategories = ["general", "bug", "feature", "billing"];
-  const category = validCategories.includes(input.category) ? input.category : "general";
-
-  const ticket = await prisma.supportTicket.create({
-    data: {
-      name: input.name,
-      email: input.email,
-      subject: input.subject,
-      category,
-      message: input.message,
-    },
-  });
-
-  return { id: ticket.id };
-}
-
-export async function getSupportTickets() {
-  const tickets = await prisma.supportTicket.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 50,
-  });
-  return tickets;
-}
-
-export async function updateTicketStatus(ticketId: string, status: string) {
-  const validStatuses = ["open", "in_progress", "resolved"];
-  if (!validStatuses.includes(status)) {
-    return { error: "Invalid status." };
-  }
-
-  await prisma.supportTicket.update({
-    where: { id: ticketId },
-    data: { status },
-  });
-
-  return { success: true };
 }

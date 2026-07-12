@@ -200,12 +200,14 @@
             msg.textContent = data.error;
           } else {
             msg.className = "lf-msg lf-msg-ok";
-            var tierText = data.tier ? " (" + data.tier + " tier)" : "";
-            msg.innerHTML = '<div class="lf-balance-box">' +
-              '<div class="lf-balance-num">' + (data.balance || 0) + '</div>' +
-              '<div class="lf-balance-label">points</div>' +
-              (data.tier ? '<div class="lf-tier">' + data.tier + '</div>' : '') +
-              '</div>';
+            msg.innerHTML = "";
+            var box = h("div", { className: "lf-balance-box" });
+            box.appendChild(h("div", { className: "lf-balance-num" }, String(data.balance || 0)));
+            box.appendChild(h("div", { className: "lf-balance-label" }, "points"));
+            if (data.tier) {
+              box.appendChild(h("div", { className: "lf-tier" }, String(data.tier)));
+            }
+            msg.appendChild(box);
           }
           btn.disabled = false;
           btn.textContent = "Check Balance";

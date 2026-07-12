@@ -1,12 +1,26 @@
+import dynamic from "next/dynamic";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrgContext } from "@/lib/auth";
-import { AnalyticsDashboard } from "@/components/analytics-dashboard";
 import {
   getCustomerLifetimeValue,
   getChurnRisk,
   getProgramROI,
   getRevenueLift,
 } from "@/lib/analytics";
+
+// Lazy-load the recharts-based dashboard so the ~95KB recharts bundle is
+// only loaded on /analytics, not on every dashboard-group page.
+const AnalyticsDashboard = dynamic(
+  () => import("@/components/analytics-dashboard").then((m) => m.default),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="card flex h-40 items-center justify-center text-sm text-espresso/40">
+        Loading analytics…
+      </div>
+    ),
+  }
+);
 
 export default async function AnalyticsPage() {
   const ctx = await getCurrentOrgContext();

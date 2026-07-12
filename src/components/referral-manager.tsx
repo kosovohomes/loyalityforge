@@ -25,11 +25,9 @@ const STATUS_STYLE: Record<string, string> = {
 export function ReferralManager({
   referrals,
   stats,
-  userId,
 }: {
   referrals: ReferralData[];
   stats: { total: number; completed: number; pending: number };
-  userId: string;
 }) {
   const router = useRouter();
   const [generating, setGenerating] = useState(false);
@@ -38,7 +36,7 @@ export function ReferralManager({
   async function onGenerate() {
     setGenerating(true);
     try {
-      const { code } = await generateReferralCode(userId);
+      const { code } = await generateReferralCode();
       setNewCode(code);
       router.refresh();
     } catch {

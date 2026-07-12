@@ -51,52 +51,78 @@ export async function getPlatformStats() {
   };
 }
 
-export async function getOrganizations() {
+export async function getOrganizations(opts: { page?: number; pageSize?: number } = {}) {
   await requireSuperAdmin();
+  const page = Math.max(1, opts.page ?? 1);
+  const pageSize = Math.min(100, Math.max(1, opts.pageSize ?? 50));
 
-  const orgs = await prisma.organization.findMany({
-    where: { slug: { not: "platform" } },
-    orderBy: { createdAt: "desc" },
-    include: {
-      _count: { select: { memberships: true, programs: true, customers: true, transactions: true } },
-    },
-  });
+  const [orgs, total] = await Promise.all([
+    prisma.organization.findMany({
+      where: { slug: { not: "platform" } },
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: { select: { memberships: true, programs: true, customers: true, transactions: true } },
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.organization.count({ where: { slug: { not: "platform" } } }),
+  ]);
 
-  return orgs.map((o) => ({
-    id: o.id,
-    name: o.name,
-    slug: o.slug,
-    createdAt: o.createdAt.toISOString(),
-    memberCount: o._count.memberships,
-    programCount: o._count.programs,
-    customerCount: o._count.customers,
-    transactionCount: o._count.transactions,
-  }));
+  return {
+    orgs: orgs.map((o) => ({
+      id: o.id,
+      name: o.name,
+      slug: o.slug,
+      createdAt: o.createdAt.toISOString(),
+      memberCount: o._count.memberships,
+      programCount: o._count.programs,
+      customerCount: o._count.customers,
+      transactionCount: o._count.transactions,
+    })),
+    total,
+    page,
+    pageSize,
+    totalPages: Math.max(1, Math.ceil(total / pageSize)),
+  };
 }
 
-export async function getAllUsers() {
+export async function getAllUsers(opts: { page?: number; pageSize?: number } = {}) {
   await requireSuperAdmin();
+  const page = Math.max(1, opts.page ?? 1);
+  const pageSize = Math.min(100, Math.max(1, opts.pageSize ?? 50));
 
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      memberships: {
-        include: { organization: { select: { name: true, slug: true } } },
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        memberships: {
+          include: { organization: { select: { name: true, slug: true } } },
+        },
       },
-    },
-  });
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.user.count(),
+  ]);
 
-  return users.map((u) => ({
-    id: u.id,
-    email: u.email,
-    name: u.name,
-    createdAt: u.createdAt.toISOString(),
-    memberships: u.memberships.map((m) => ({
-      orgName: m.organization.name,
-      orgSlug: m.organization.slug,
-      role: m.role,
+  return {
+    users: users.map((u) => ({
+      id: u.id,
+      email: u.email,
+      name: u.name,
+      createdAt: u.createdAt.toISOString(),
+      memberships: u.memberships.map((m) => ({
+        orgName: m.organization.name,
+        orgSlug: m.organization.slug,
+        role: m.role,
+      })),
     })),
-  }));
+    total,
+    page,
+    pageSize,
+    totalPages: Math.max(1, Math.ceil(total / pageSize)),
+  };
 }
 
 export async function getSupportTickets(status?: string) {
@@ -138,26 +164,39 @@ export async function updateTicketStatus(ticketId: string, newStatus: string) {
   return { success: true };
 }
 
-export async function getAllPrograms() {
+export async function getAllPrograms(opts: { page?: number; pageSize?: number } = {}) {
   await requireSuperAdmin();
+  const page = Math.max(1, opts.page ?? 1);
+  const pageSize = Math.min(100, Math.max(1, opts.pageSize ?? 50));
 
-  const programs = await prisma.loyaltyProgram.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      organization: { select: { name: true, slug: true } },
-      _count: { select: { cards: true, transactions: true } },
-    },
-  });
+  const [programs, total] = await Promise.all([
+    prisma.loyaltyProgram.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        organization: { select: { name: true, slug: true } },
+        _count: { select: { cards: true, transactions: true } },
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.loyaltyProgram.count(),
+  ]);
 
-  return programs.map((p) => ({
-    id: p.id,
-    name: p.name,
-    type: p.type,
-    status: p.status,
-    orgName: p.organization.name,
-    orgSlug: p.organization.slug,
-    cardCount: p._count.cards,
-    transactionCount: p._count.transactions,
-    createdAt: p.createdAt.toISOString(),
-  }));
+  return {
+    programs: programs.map((p) => ({
+      id: p.id,
+      name: p.name,
+      type: p.type,
+      status: p.status,
+      orgName: p.organization.name,
+      orgSlug: p.organization.slug,
+      cardCount: p._count.cards,
+      transactionCount: p._count.transactions,
+      createdAt: p.createdAt.toISOString(),
+    })),
+    total,
+    page,
+    pageSize,
+    totalPages: Math.max(1, Math.ceil(total / pageSize)),
+  };
 }

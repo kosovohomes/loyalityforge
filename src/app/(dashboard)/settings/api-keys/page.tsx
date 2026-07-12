@@ -2,15 +2,22 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentOrgContext } from "@/lib/auth";
 import { ApiKeyManager } from "@/components/api-key-manager";
 import { WidgetSnippet } from "@/components/widget-snippet";
+import { WidgetConfigManager } from "@/components/widget-config-manager";
 
 export default async function ApiKeysPage() {
   const ctx = await getCurrentOrgContext();
   if (!ctx) return null;
 
-  const keys = await prisma.apiKey.findMany({
-    where: { organizationId: ctx.orgId },
-    orderBy: { createdAt: "desc" },
-  });
+  const [keys, org] = await Promise.all([
+    prisma.apiKey.findMany({
+      where: { organizationId: ctx.orgId },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.organization.findUnique({
+      where: { id: ctx.orgId },
+      select: { allowedOrigins: true, widgetSecretHash: true },
+    }),
+  ]);
 
   return (
     <div>
@@ -35,6 +42,21 @@ export default async function ApiKeysPage() {
               lastUsedAt: k.lastUsedAt ? k.lastUsedAt.toISOString() : null,
               revoked: k.revoked,
             }))}
+          />
+        </div>
+      </div>
+
+      <div className="mt-10">
+        <h2 className="font-display text-lg font-semibold text-espresso">Widget configuration</h2>
+        <p className="mt-1 text-sm text-espresso/60">
+          Configure the shared secret and allowed origins for your embeddable widget.
+        </p>
+        <div className="mt-4">
+          <WidgetConfigManager
+            initialConfig={{
+              allowedOrigins: org?.allowedOrigins ?? "",
+              hasSecret: !!org?.widgetSecretHash,
+            }}
           />
         </div>
       </div>

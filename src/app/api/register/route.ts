@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { rateLimit, rateLimitHeaders, getClientIp } from "@/lib/rate-limit";
+import { rateLimitAsync, rateLimitHeaders, getClientIp } from "@/lib/rate-limit";
+import { mapPrismaError } from "@/lib/prisma-errors";
 
 const schema = z.object({
   cafeName: z.string().min(2, "Cafe name is too short").max(80),
@@ -23,51 +24,70 @@ function slugify(input: string) {
 
 export async function POST(request: Request) {
   const ip = getClientIp(request);
-  const rl = rateLimit(`register:${ip}`, 5, 60_000);
+  const rl = await rateLimitAsync(`register:${ip}`, 5, 60_000);
   if (!rl.allowed) {
-    return NextResponse.json({ error: "Too many requests. Please try again later." }, {
-      status: 429,
-      headers: rateLimitHeaders(rl),
-    });
-  }
-
-  const body = await request.json().catch(() => null);
-  const parsed = schema.safeParse(body);
-  if (!parsed.success) {
     return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Invalid input" },
-      { status: 400 }
+      { error: "Too many requests. Please try again later." },
+      { status: 429, headers: rateLimitHeaders(rl) }
     );
   }
-  const { cafeName, name, email, password } = parsed.data;
-  const normalizedEmail = email.toLowerCase().trim();
 
-  const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
-  if (existing) {
-    return NextResponse.json({ error: "An account with that email already exists." }, { status: 409 });
+  try {
+    const body = await request.json().catch(() => null);
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.issues[0]?.message ?? "Invalid input" },
+        { status: 400 }
+      );
+    }
+    const { cafeName, name, email, password } = parsed.data;
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const baseSlug = slugify(cafeName);
+
+    const MAX_SLUG_ATTEMPTS = 10;
+    for (let attempt = 0; attempt < MAX_SLUG_ATTEMPTS; attempt++) {
+      const slug = attempt === 0 ? baseSlug : `${baseSlug}-${attempt + 1}`;
+      try {
+        await prisma.$transaction(async (tx) => {
+          const org = await tx.organization.create({
+            data: { name: cafeName, slug },
+          });
+          const user = await tx.user.create({
+            data: { email: normalizedEmail, passwordHash, name },
+          });
+          await tx.membership.create({
+            data: { userId: user.id, organizationId: org.id, role: "OWNER" },
+          });
+        });
+        return NextResponse.json({ ok: true });
+      } catch (err) {
+        const mapped = mapPrismaError(err);
+        if (mapped.status === 409) {
+          const emailTaken = await prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            select: { id: true },
+          });
+          if (emailTaken) {
+            return NextResponse.json(
+              { error: "An account with that email already exists." },
+              { status: 409 }
+            );
+          }
+          continue;
+        }
+        console.error("[register] error", err);
+        return NextResponse.json({ error: "Internal error" }, { status: 500 });
+      }
+    }
+    return NextResponse.json(
+      { error: "Could not generate a unique slug. Please try a different cafe name." },
+      { status: 409 }
+    );
+  } catch (err) {
+    console.error("[register] uncaught error", err);
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
-
-  const baseSlug = slugify(cafeName);
-  let slug = baseSlug;
-  let suffix = 1;
-  while (await prisma.organization.findUnique({ where: { slug } })) {
-    suffix += 1;
-    slug = `${baseSlug}-${suffix}`;
-  }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  await prisma.$transaction(async (tx) => {
-    const org = await tx.organization.create({
-      data: { name: cafeName, slug },
-    });
-    const user = await tx.user.create({
-      data: { email: normalizedEmail, passwordHash, name },
-    });
-    await tx.membership.create({
-      data: { userId: user.id, organizationId: org.id, role: "OWNER" },
-    });
-  });
-
-  return NextResponse.json({ ok: true });
 }

@@ -34,7 +34,7 @@ type RevenueLift = {
 
 const COLORS = ["#C4922C", "#33513F", "#B54F3A", "#4A3324", "#9C6F1E"];
 
-export function AnalyticsDashboard({
+export default function AnalyticsDashboard({
   clvData,
   churnRisk,
   programROI,

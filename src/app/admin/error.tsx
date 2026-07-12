@@ -2,14 +2,7 @@
 
 import { useEffect } from "react";
 
-/**
- * Dashboard error boundary.
- *
- * Logs the error to the console for ops visibility and shows a generic
- * message with the error digest (for support correlation) rather than
- * error.message, which can leak Prisma schema internals. (Review §2.15.)
- */
-export default function DashboardError({
+export default function AdminError({
   error,
   reset,
 }: {
@@ -17,14 +10,16 @@ export default function DashboardError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("[dashboard-error]", error, { digest: error.digest });
+    console.error("[admin-error]", error, { digest: error.digest });
   }, [error]);
 
   return (
     <div className="card">
-      <h2 className="font-display text-xl font-semibold text-espresso">Something went wrong</h2>
+      <h2 className="font-display text-xl font-semibold text-espresso">
+        Admin section error
+      </h2>
       <p className="mt-2 text-sm text-espresso/60">
-        Failed to load this section. Please try again.
+        Failed to load this admin page. Please try again.
         {error.digest && (
           <span className="mt-2 block font-mono text-xs text-espresso/40">
             Reference: {error.digest}

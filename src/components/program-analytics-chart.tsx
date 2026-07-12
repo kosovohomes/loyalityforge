@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 
 type ChartData = { name: string; [key: string]: string | number };
 
-export function ProgramAnalyticsChart({
+export default function ProgramAnalyticsChart({
   data,
   bars = [{ key: "Earns", color: "#C4922C" }, { key: "Redemptions", color: "#33513F" }],
 }: {

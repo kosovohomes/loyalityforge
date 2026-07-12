@@ -22,5 +22,5 @@ export default async function ReferralsPage() {
   const completed = referrals.filter((r) => r.status === "COMPLETED").length;
   const pending = referrals.filter((r) => r.status === "PENDING").length;
 
-  return <ReferralManager referrals={referrals} stats={{ total, completed, pending }} userId={ctx.userId} />;
+  return <ReferralManager referrals={referrals} stats={{ total, completed, pending }} />;
 }

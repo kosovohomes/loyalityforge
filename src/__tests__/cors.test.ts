@@ -1,7 +1,7 @@
 import { CORS_HEADERS } from "@/lib/cors";
 
-describe("CORS_HEADERS", () => {
-  it("allows all origins", () => {
+describe("CORS_HEADERS (legacy static export, used only for the PII-free programs-list endpoint)", () => {
+  it("allows all origins (backward-compat wildcard)", () => {
     expect(CORS_HEADERS["Access-Control-Allow-Origin"]).toBe("*");
   });
 
@@ -9,8 +9,9 @@ describe("CORS_HEADERS", () => {
     expect(CORS_HEADERS["Access-Control-Allow-Methods"]).toBe("GET, POST, OPTIONS");
   });
 
-  it("allows Content-Type header", () => {
-    expect(CORS_HEADERS["Access-Control-Allow-Headers"]).toBe("Content-Type");
+  it("allows Content-Type and x-widget-secret headers", () => {
+    expect(CORS_HEADERS["Access-Control-Allow-Headers"]).toContain("Content-Type");
+    expect(CORS_HEADERS["Access-Control-Allow-Headers"]).toContain("x-widget-secret");
   });
 
   it("has all required CORS header keys", () => {

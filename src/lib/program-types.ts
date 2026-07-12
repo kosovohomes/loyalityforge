@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type ProgramType = "STAMP" | "POINTS" | "TIERED";
 
 export interface StampRules {
@@ -17,7 +19,7 @@ export interface PointsRules {
 
 export interface TierDef {
   name: string;
-  threshold: number; // cumulative points/spend to reach this tier
+  threshold: number;
   perks: string;
 }
 
@@ -32,6 +34,46 @@ export interface ProgramBranding {
   logoUrl?: string;
   primaryColor: string;
   terms?: string;
+}
+
+const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
+
+export const StampRulesSchema = z.object({
+  stampsRequired: z.number().int().positive(),
+  rewardDescription: z.string().min(1).max(500),
+  minSpend: z.number().nonnegative().optional(),
+  expiresAfterDays: z.number().int().positive().max(3650).optional(),
+});
+
+export const PointsRulesSchema = z.object({
+  pointsPerDollar: z.number().positive().max(1000),
+  pointsForReward: z.number().int().positive(),
+  rewardDescription: z.string().min(1).max(500),
+  minSpend: z.number().nonnegative().optional(),
+  expiresAfterDays: z.number().int().positive().max(3650).optional(),
+});
+
+export const TierDefSchema = z.object({
+  name: z.string().min(1).max(60),
+  threshold: z.number().int().nonnegative(),
+  perks: z.string().min(1).max(500),
+});
+
+export const TieredRulesSchema = z.object({
+  tiers: z.array(TierDefSchema).min(1),
+  pointsPerDollar: z.number().positive().max(1000),
+});
+
+export const ProgramBrandingSchema = z.object({
+  logoUrl: z.string().url().optional(),
+  primaryColor: z.string().regex(HEX_COLOR, "primaryColor must be a #RRGGBB hex color"),
+  terms: z.string().max(5000).optional(),
+});
+
+export function rulesSchemaFor(type: ProgramType): z.ZodType {
+  if (type === "STAMP") return StampRulesSchema;
+  if (type === "POINTS") return PointsRulesSchema;
+  return TieredRulesSchema;
 }
 
 export const TEMPLATES: Record<
@@ -73,15 +115,34 @@ export const TEMPLATES: Record<
   },
 };
 
+export function parseAndValidateRules(type: ProgramType, rules: string): ProgramRules {
+  const parsed = JSON.parse(rules);
+  const schema = rulesSchemaFor(type);
+  const result = schema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error(
+      `Invalid rules for ${type} program: ${result.error.issues[0]?.message ?? "validation failed"}`
+    );
+  }
+  return result.data as ProgramRules;
+}
+
 export function parseRules<T = ProgramRules>(rules: string): T {
   return JSON.parse(rules) as T;
 }
 
 export function parseBranding(branding: string): ProgramBranding {
-  return JSON.parse(branding) as ProgramBranding;
+  const fallback: ProgramBranding = { primaryColor: "#C4922C" };
+  try {
+    const parsed = JSON.parse(branding);
+    const result = ProgramBrandingSchema.safeParse(parsed);
+    if (!result.success) return fallback;
+    return result.data;
+  } catch {
+    return fallback;
+  }
 }
 
-/** Given a tiered program's rules and a card's total balance, determine current tier. */
 export function computeTier(rules: TieredRules, balance: number): string {
   let current = rules.tiers[0]?.name ?? "";
   for (const t of [...rules.tiers].sort((a, b) => a.threshold - b.threshold)) {
@@ -90,10 +151,7 @@ export function computeTier(rules: TieredRules, balance: number): string {
   return current;
 }
 
-// ---------------------------------------------------------------------------
 // Non-transactional earning actions
-// ---------------------------------------------------------------------------
-
 export interface EarnAction {
   id: string;
   label: string;
@@ -111,10 +169,6 @@ export const EARN_ACTIONS: EarnAction[] = [
   { id: "check_in", label: "Store Check-in", points: 10, description: "Check in at a physical location" },
 ];
 
-// ---------------------------------------------------------------------------
-// Rewards Catalog types
-// ---------------------------------------------------------------------------
-
 export type RewardType = "COUPON" | "FREE_PRODUCT" | "FREE_SHIPPING" | "EXPERIENTIAL" | "CHARITY_DONATION" | "STORE_CREDIT";
 export type RewardCostType = "POINTS" | "STAMPS";
 
@@ -126,10 +180,6 @@ export const REWARD_TYPE_LABELS: Record<RewardType, string> = {
   CHARITY_DONATION: "Charity Donation",
   STORE_CREDIT: "Store Credit",
 };
-
-// ---------------------------------------------------------------------------
-// Challenge types
-// ---------------------------------------------------------------------------
 
 export type ChallengeType = "VISIT_COUNT" | "SPEND_AMOUNT" | "STREAK" | "REFERRAL_COUNT" | "BIRTHDAY" | "CUSTOM";
 

@@ -1,14 +1,24 @@
 import { getAllPrograms } from "@/lib/actions-admin";
+import { Pagination } from "@/components/pagination";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminProgramsPage() {
-  const programs = await getAllPrograms();
+const PAGE_SIZE = 50;
+
+export default async function AdminProgramsPage({
+  searchParams,
+}: {
+  searchParams: { page?: string };
+}) {
+  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
+  const { programs, total, totalPages } = await getAllPrograms({ page, pageSize: PAGE_SIZE });
 
   return (
     <div>
       <h1 className="font-display text-2xl font-semibold text-espresso">Programs</h1>
-      <p className="mt-1 text-sm text-espresso/60">{programs.length} total programs across all organizations.</p>
+      <p className="mt-1 text-sm text-espresso/60">
+        {total} total programs · page {page} of {totalPages}
+      </p>
 
       <div className="mt-8 overflow-x-auto">
         <table className="w-full text-left text-sm">
@@ -48,6 +58,8 @@ export default async function AdminProgramsPage() {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={page} totalPages={totalPages} basePath="/admin/programs" />
     </div>
   );
 }
