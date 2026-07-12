@@ -15,6 +15,11 @@ async function requireOrg() {
   const ctx = await getCurrentOrgContext();
   if (!ctx) throw new Error("Not authenticated");
   if (!ctx.orgId) throw new Error("No organization membership for this user");
+  // Enforce org approval/suspension at the action level. (Audit A1.)
+  if (ctx.role !== "SUPER_ADMIN" && ctx.role !== "ACCOUNT_MANAGER") {
+    if (!ctx.orgApproved) throw new Error("Your account is pending approval.");
+    if (ctx.orgSuspended) throw new Error("Your account has been suspended.");
+  }
   return ctx;
 }
 
@@ -128,6 +133,30 @@ export async function completeReferral(input: {
 
   try {
     await prisma.$transaction(async (tx) => {
+      // Scope the referral code to the current org. The Referral model
+      // doesn\'t have organizationId, so we filter via the referrer\'s
+      // membership. This prevents cross-tenant referral completion.
+      // (Audit A2.)
+      const referral = await tx.referral.findUnique({
+        where: { code: input.code },
+        include: {
+          referrerUser: {
+            select: {
+              memberships: {
+                where: { organizationId: ctx.orgId },
+                select: { id: true },
+              },
+            },
+          },
+        },
+      });
+      if (!referral || referral.status !== "PENDING") {
+        throw new BalanceError("Invalid, already-used, or non-existent referral code");
+      }
+      if (referral.referrerUser.memberships.length === 0) {
+        // The referral code belongs to a user in a different org.
+        throw new BalanceError("Invalid, already-used, or non-existent referral code");
+      }
       const flip = await tx.referral.updateMany({
         where: { code: input.code, status: "PENDING" },
         data: {

@@ -31,15 +31,18 @@ export function ReferralManager({
 }) {
   const router = useRouter();
   const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [newCode, setNewCode] = useState<string | null>(null);
 
   async function onGenerate() {
     setGenerating(true);
+    setError(null);
     try {
       const { code } = await generateReferralCode();
       setNewCode(code);
       router.refresh();
-    } catch {
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to generate code");
     } finally {
       setGenerating(false);
     }
@@ -72,6 +75,7 @@ export function ReferralManager({
         </div>
       </div>
 
+      {error && <p role="alert" className="text-sm text-clay">{error}</p>}
       {newCode && (
         <div className="card mt-6 border-gold/40 bg-gold/5">
           <p className="text-xs font-semibold uppercase tracking-wide text-espresso/50">New referral code generated</p>

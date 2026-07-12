@@ -14,16 +14,23 @@ export function EditCustomerForm({
   const router = useRouter();
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    await updateCustomer(customerId, form);
-    setSaving(false);
-    setSaved(true);
-    router.refresh();
-    setTimeout(() => setSaved(false), 2000);
+    setError(null);
+    try {
+      await updateCustomer(customerId, form);
+      setSaved(true);
+      router.refresh();
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -46,7 +53,8 @@ export function EditCustomerForm({
         <input className="input" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
       </div>
       <div className="flex items-center gap-3">
-        <button type="submit" className="btn-secondary" disabled={saving}>
+        {error && <p role="alert" className="text-sm text-clay">{error}</p>}
+      <button type="submit" className="btn-secondary" disabled={saving}>
           {saving ? "Saving…" : "Save profile"}
         </button>
         {saved && <span className="text-sm text-pine-dark">Saved ✓</span>}

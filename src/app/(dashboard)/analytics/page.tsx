@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { prisma } from "@/lib/prisma";
 import { getCurrentOrgContext } from "@/lib/auth";
 import {
-  getCustomerLifetimeValue,
+  getCustomerLifetimeValueBatch,
   getChurnRisk,
   getProgramROI,
   getRevenueLift,
@@ -31,18 +31,23 @@ export default async function AnalyticsPage() {
     select: { id: true, name: true },
   });
 
-  const customers = await prisma.customer.findMany({
-    where: { organizationId: ctx.orgId },
-    select: { id: true, name: true, email: true },
-    orderBy: { createdAt: "desc" },
-  });
+  // Batch-compute CLV for all customers in one query instead of N+1.
+  // (Audit B1.)
+  const [customers, clvBatch] = await Promise.all([
+    prisma.customer.findMany({
+      where: { organizationId: ctx.orgId },
+      select: { id: true, name: true, email: true },
+      orderBy: { createdAt: "desc" },
+      take: 500, // cap to prevent unbounded growth
+    }),
+    getCustomerLifetimeValueBatch(ctx.orgId),
+  ]);
 
-  const clvData = await Promise.all(
-    customers.map(async (c) => {
-      const clv = await getCustomerLifetimeValue(c.id);
-      return { name: c.name || c.email || "Unknown", ...clv };
-    })
-  );
+  const clvMap = new Map(clvBatch.map((c) => [c.customerId, c]));
+  const clvData = customers.map((c) => {
+    const clv = clvMap.get(c.id) ?? { totalEarned: 0, totalRedeemed: 0, netBalance: 0 };
+    return { name: c.name || c.email || "Unknown", ...clv };
+  });
 
   const churnRisk = await getChurnRisk(ctx.orgId, 30);
 

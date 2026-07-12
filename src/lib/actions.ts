@@ -29,6 +29,14 @@ async function requireOrg() {
   const ctx = await getCurrentOrgContext();
   if (!ctx) throw new Error("Not authenticated");
   if (!ctx.orgId) throw new Error("No organization membership for this user");
+  // Enforce org approval/suspension at the action level, not just the
+  // layout. Without this, a suspended org's members could still call
+  // server actions (earn, redeem, adjust balance, export) via the RSC
+  // protocol even though they see a "suspended" screen. (Audit A1.)
+  if (ctx.role !== "SUPER_ADMIN" && ctx.role !== "ACCOUNT_MANAGER") {
+    if (!ctx.orgApproved) throw new Error("Your account is pending approval.");
+    if (ctx.orgSuspended) throw new Error("Your account has been suspended.");
+  }
   return ctx;
 }
 

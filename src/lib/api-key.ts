@@ -37,6 +37,12 @@ export async function authenticateApiKey(request: Request) {
 
   if (candidate) {
     if (candidate.revoked) return null;
+    // Enforce org approval/suspension for API-key requests too. API keys
+    // don't carry JWT flags, so we check the org status from the DB.
+    // (Audit A1.)
+    if (!candidate.organization.approved || candidate.organization.suspendedAt) {
+      return null;
+    }
     const match = await bcrypt.compare(raw, candidate.hashedKey);
     if (!match) return null;
     await prisma.apiKey.update({
@@ -51,6 +57,10 @@ export async function authenticateApiKey(request: Request) {
     include: { organization: true },
   });
   for (const c of legacyCandidates) {
+    // Same org-status check for legacy keys. (Audit A1.)
+    if (!c.organization.approved || c.organization.suspendedAt) {
+      continue;
+    }
     const match = await bcrypt.compare(raw, c.hashedKey);
     if (match) {
       await prisma.apiKey.update({

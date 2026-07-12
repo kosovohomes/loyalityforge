@@ -22,6 +22,8 @@ export async function GET(request: Request, { params }: { params: { slug: string
 
   const org = await prisma.organization.findUnique({ where: { slug: params.slug } });
   if (!org) return corsForbidden("Cafe not found");
+  // Don't serve widget for unapproved or suspended orgs. (Audit A1.)
+  if (!org.approved || org.suspendedAt) return corsForbidden("Cafe not available");
 
   const corsHeaders = corsHeadersForOrg(org, request);
   if (!corsHeaders) return corsForbidden();

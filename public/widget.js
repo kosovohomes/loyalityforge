@@ -12,7 +12,12 @@
   // data-widget-secret attribute of the container div.
   var widgetSecret = container.getAttribute("data-widget-secret") || "";
 
-  var API_BASE = window.LOYALTYFORGE_API_URL || window.location.origin;
+  // When embedded on a third-party cafe website, window.location.origin
+  // is the cafe's domain (where /api/public/* doesn't exist). Use the
+  // LoyaltyForge app URL instead. The cafe owner can override by setting
+  // window.LOYALTYFORGE_API_URL before the script loads (for self-hosted
+  // deployments). (Audit B7.)
+  var API_BASE = window.LOYALTYFORGE_API_URL || "https://loyalityforge-koso-s-projects.vercel.app";
   var primaryColor = "#b08d57";
   var espresso = "#3c2415";
   var cream = "#faf6f0";

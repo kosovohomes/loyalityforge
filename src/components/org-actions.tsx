@@ -8,10 +8,12 @@ export function OrgActions({
   orgId,
   approved,
   suspendedAt,
+  viewerRole,
 }: {
   orgId: string;
   approved: boolean;
   suspendedAt: string | null;
+  viewerRole: "SUPER_ADMIN" | "ACCOUNT_MANAGER";
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -53,6 +55,10 @@ export function OrgActions({
   }
 
   if (suspendedAt) {
+    // Only SUPER_ADMIN can reactivate. Account managers see a disabled label.
+    if (viewerRole !== "SUPER_ADMIN") {
+      return <span className="text-xs text-espresso/40">Suspended (super admin only)</span>;
+    }
     return (
       <div className="flex flex-col gap-1">
         <button
@@ -62,7 +68,7 @@ export function OrgActions({
         >
           Reactivate
         </button>
-        {error && <span className="text-xs text-clay">{error}</span>}
+        {error && <span role="alert" className="text-xs text-clay">{error}</span>}
       </div>
     );
   }
@@ -77,7 +83,7 @@ export function OrgActions({
         >
           Approve
         </button>
-        {error && <span className="text-xs text-clay">{error}</span>}
+        {error && <span role="alert" className="text-xs text-clay">{error}</span>}
       </div>
     );
   }
@@ -107,7 +113,7 @@ export function OrgActions({
           </button>
         </form>
       )}
-      {error && <span className="text-xs text-clay">{error}</span>}
+      {error && <span role="alert" className="text-xs text-clay">{error}</span>}
     </div>
   );
 }

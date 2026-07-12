@@ -9,7 +9,7 @@ async function main() {
   const org = await prisma.organization.upsert({
     where: { slug: "sunrise-coffee-co" },
     update: {},
-    create: { name: "Sunrise Coffee Co.", slug: "sunrise-coffee-co" },
+    create: { name: "Sunrise Coffee Co.", slug: "sunrise-coffee-co", approved: true },
   });
 
   const owner = await prisma.user.upsert({

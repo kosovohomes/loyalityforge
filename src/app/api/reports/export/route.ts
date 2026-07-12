@@ -25,6 +25,10 @@ export async function GET(request: Request) {
   if (ctx.role !== "OWNER" && ctx.role !== "MANAGER") {
     return NextResponse.json({ error: "Insufficient permissions for export" }, { status: 403 });
   }
+  // Block exports for unapproved/suspended orgs. (Audit A1.)
+  if (!ctx.orgApproved || ctx.orgSuspended) {
+    return NextResponse.json({ error: "Account not active" }, { status: 403 });
+  }
 
   const ip = getClientIp(request);
   const rl = await rateLimitAsync(`export:${ip}`, 3, 60_000);

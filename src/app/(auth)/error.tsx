@@ -22,6 +22,11 @@ export default function AuthError({
         </h2>
         <p className="mt-2 text-sm text-espresso/60">
           An error occurred on this page. Please try again.
+          {error.digest && (
+            <span className="mt-2 block font-mono text-xs text-espresso/40">
+              Reference: {error.digest}
+            </span>
+          )}
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <button onClick={reset} className="btn-primary">

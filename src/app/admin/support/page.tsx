@@ -1,4 +1,5 @@
 import { getSupportTickets } from "@/lib/actions-admin";
+import { prisma } from "@/lib/prisma";
 import { TicketActions } from "@/components/ticket-actions";
 
 export const dynamic = "force-dynamic";
@@ -9,13 +10,19 @@ export default async function AdminSupportPage({
   searchParams: { status?: string };
 }) {
   const status = searchParams.status || "all";
-  const tickets = await getSupportTickets(status);
+  const [tickets, counts] = await Promise.all([
+    getSupportTickets(status),
+    prisma.supportTicket.groupBy({
+      by: ["status"],
+      _count: { status: true },
+    }),
+  ]);
 
   const statusCounts = {
-    all: tickets.length,
-    open: tickets.filter((t) => t.status === "open").length,
-    in_progress: tickets.filter((t) => t.status === "in_progress").length,
-    resolved: tickets.filter((t) => t.status === "resolved").length,
+    all: counts.reduce((sum, c) => sum + c._count.status, 0),
+    open: counts.find((c) => c.status === "open")?._count.status ?? 0,
+    in_progress: counts.find((c) => c.status === "in_progress")?._count.status ?? 0,
+    resolved: counts.find((c) => c.status === "resolved")?._count.status ?? 0,
   };
 
   return (

@@ -1,5 +1,37 @@
 import { prisma } from "@/lib/prisma";
 
+/**
+ * Batch-compute customer lifetime value for all customers in an org.
+ * Uses a single groupBy query instead of one query per customer.
+ * (Audit B1 — replaces the N+1 Promise.all(customers.map(getCustomerLifetimeValue)).)
+ */
+export async function getCustomerLifetimeValueBatch(organizationId: string) {
+  const [earnAgg, redeemAgg] = await Promise.all([
+    prisma.transaction.groupBy({
+      by: ["customerId"],
+      where: { organizationId, amount: { gt: 0 } },
+      _sum: { amount: true },
+    }),
+    prisma.transaction.groupBy({
+      by: ["customerId"],
+      where: { organizationId, amount: { lt: 0 } },
+      _sum: { amount: true },
+    }),
+  ]);
+
+  const redeemMap = new Map(redeemAgg.map((r) => [r.customerId, Math.abs(r._sum.amount ?? 0)]));
+  return earnAgg.map((e) => {
+    const earned = e._sum.amount ?? 0;
+    const redeemed = redeemMap.get(e.customerId) ?? 0;
+    return {
+      customerId: e.customerId,
+      totalEarned: earned,
+      totalRedeemed: redeemed,
+      netBalance: earned - redeemed,
+    };
+  });
+}
+
 export async function getCustomerLifetimeValue(customerId: string) {
   const transactions = await prisma.transaction.findMany({
     where: { customerId, type: { in: ["EARN", "REDEEM"] } },

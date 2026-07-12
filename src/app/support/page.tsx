@@ -14,6 +14,7 @@ export default function SupportPage() {
   });
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -33,6 +34,7 @@ export default function SupportPage() {
         setStatus("error");
         setErrorMsg(result.error);
       } else {
+        setSubmittedEmail(form.email);
         setStatus("success");
         setForm({ name: "", email: "", subject: "", category: "general", message: "" });
       }
@@ -66,12 +68,12 @@ export default function SupportPage() {
 
         {status === "success" && (
           <div className="mt-6 rounded-lg border border-pine/30 bg-pine/10 p-4 text-sm text-pine-dark">
-            <strong>Message sent!</strong> We&apos;ll get back to you at {form.email || "your email"} within 24 hours.
+            <strong>Message sent!</strong> We&apos;ll get back to you at {submittedEmail || "your email"} within 24 hours.
           </div>
         )}
 
         {status === "error" && (
-          <div className="mt-6 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800">
+          <div className="mt-6 rounded-lg border border-clay/30 bg-clay/10 p-4 text-sm text-clay">
             {errorMsg}
           </div>
         )}

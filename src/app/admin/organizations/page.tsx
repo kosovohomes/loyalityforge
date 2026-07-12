@@ -1,4 +1,5 @@
 import { getOrganizations } from "@/lib/actions-admin";
+import { getAuthSession } from "@/lib/auth";
 import { Pagination } from "@/components/pagination";
 import { OrgActions } from "@/components/org-actions";
 
@@ -13,7 +14,11 @@ export default async function AdminOrganizationsPage({
 }) {
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
   const status = (searchParams.status ?? "all") as "all" | "pending" | "approved" | "suspended";
-  const { orgs, total, totalPages } = await getOrganizations({ page, pageSize: PAGE_SIZE, status });
+  const [session, { orgs, total, totalPages }] = await Promise.all([
+    getAuthSession(),
+    getOrganizations({ page, pageSize: PAGE_SIZE, status }),
+  ]);
+  const viewerRole = session?.user?.role as "SUPER_ADMIN" | "ACCOUNT_MANAGER";
 
   const statusFilters = [
     { key: "all", label: "All" },
@@ -88,6 +93,7 @@ export default async function AdminOrganizationsPage({
                     orgId={org.id}
                     approved={org.approved}
                     suspendedAt={org.suspendedAt}
+                    viewerRole={viewerRole}
                   />
                 </td>
               </tr>

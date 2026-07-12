@@ -40,20 +40,32 @@ export function ProgramEditor({
   const [branding, setBranding] = useState<ProgramBranding>(initialBranding);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function save() {
     setSaving(true);
     setSaved(false);
-    await updateProgram(programId, { name, rules, branding });
-    setSaving(false);
-    setSaved(true);
-    router.refresh();
-    setTimeout(() => setSaved(false), 2000);
+    setError(null);
+    try {
+      await updateProgram(programId, { name, rules, branding });
+      setSaved(true);
+      router.refresh();
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save");
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function changeStatus(s: "DRAFT" | "PUBLISHED" | "ARCHIVED") {
-    await setProgramStatus(programId, s);
-    router.refresh();
+    setError(null);
+    try {
+      await setProgramStatus(programId, s);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to change status");
+    }
   }
 
   return (
@@ -93,6 +105,7 @@ export function ProgramEditor({
               {saving ? "Saving…" : "Save changes"}
             </button>
             {saved && <span className="text-sm text-pine-dark">Saved ✓</span>}
+        {error && <p role="alert" className="text-sm text-clay">{error}</p>}
           </div>
         </div>
 
