@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const justRegistered = searchParams.get("registered") === "1";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -30,6 +32,11 @@ export default function LoginPage() {
     <div className="card">
       <h1 className="font-display text-2xl font-semibold text-espresso">Welcome back</h1>
       <p className="mt-1 text-sm text-espresso/60">Sign in to manage your loyalty programs.</p>
+      {justRegistered && (
+        <div className="mt-4 rounded-lg border border-pine/30 bg-pine/10 p-3 text-sm text-pine-dark">
+          <strong>Account created!</strong> Please sign in with your email and password.
+        </div>
+      )}
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div>
           <label className="label">Email</label>

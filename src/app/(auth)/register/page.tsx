@@ -15,33 +15,46 @@ export default function RegisterPage() {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
+    // Step 1: create the account. This is the important part — if it
+    // succeeds, the account exists even if auto sign-in fails.
     try {
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong");
+        setError(data.error ?? "Registration failed. Please try again.");
         setLoading(false);
         return;
       }
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+      setLoading(false);
+      return;
+    }
+
+    // Step 2: try to auto sign-in. If this fails for any reason, redirect
+    // to /login so the user can sign in manually — their account was
+    // already created in step 1.
+    try {
       const signInRes = await signIn("credentials", {
         email: form.email,
         password: form.password,
         redirect: false,
       });
       if (signInRes?.error) {
-        setError("Account created — please sign in.");
-        router.push("/login");
+        // Account created but auto-login failed — send them to /login.
+        router.push("/login?registered=1");
         return;
       }
       router.push("/dashboard");
       router.refresh();
     } catch {
-      setError("Something went wrong. Please try again.");
-      setLoading(false);
+      // Account created but signIn threw — send them to /login.
+      router.push("/login?registered=1");
     }
   }
 
