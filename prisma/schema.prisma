@@ -28,11 +28,17 @@ model Organization {
   id             String           @id @default(cuid())
   name           String
   slug           String           @unique
-  // Widget-facing shared secret (bcrypt hash). Gates public widget endpoints
-  // that return customer PII (balance, tier). Rotated by org owner.
   widgetSecretHash String?
-  // Comma-separated CORS allowlist for this org's public widget endpoints.
   allowedOrigins  String?
+  // Approval state: new orgs start as false (pending). Super admin or
+  // account manager must approve before the org can use the app.
+  approved        Boolean          @default(false)
+  approvedAt      DateTime?
+  approvedById    String?
+  // Suspension state: null = active. Set when an admin suspends the org.
+  suspendedAt     DateTime?
+  suspensionReason String?
+  suspendedById   String?
   createdAt      DateTime         @default(now())
   memberships    Membership[]
   programs       LoyaltyProgram[]
@@ -48,6 +54,10 @@ model Organization {
 
 enum Role {
   SUPER_ADMIN
+  // Platform-level staff with limited admin powers. Can approve/suspend
+  // orgs and respond to support tickets, but CANNOT export data, view
+  // raw customer PII, or manage other account managers.
+  ACCOUNT_MANAGER
   OWNER
   MANAGER
   STAFF

@@ -32,7 +32,11 @@ async function requireOrg() {
   return ctx;
 }
 
-type Role = "SUPER_ADMIN" | "OWNER" | "MANAGER" | "STAFF";
+type Role = "SUPER_ADMIN" | "ACCOUNT_MANAGER" | "OWNER" | "MANAGER" | "STAFF";
+
+function isRole(value: string): value is Role {
+  return ["SUPER_ADMIN", "ACCOUNT_MANAGER", "OWNER", "MANAGER", "STAFF"].includes(value);
+}
 
 /**
  * requireOrg + role gate. For sensitive actions, pass `revalidate: true`
@@ -52,7 +56,7 @@ async function requireRole(allowed: Role[], opts: { revalidate?: boolean } = {})
     }
     return { ...ctx, role: membership.role as Role };
   }
-  if (!allowed.includes(ctx.role)) {
+  if (!isRole(ctx.role) || !allowed.includes(ctx.role)) {
     throw new Error("Insufficient permissions for this action");
   }
   return ctx;
@@ -480,3 +484,5 @@ export async function getWidgetConfig() {
     hasSecret: !!org.widgetSecretHash,
   };
 }
+
+

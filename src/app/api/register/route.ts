@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       try {
         await prisma.$transaction(async (tx) => {
           const org = await tx.organization.create({
-            data: { name: cafeName, slug },
+            data: { name: cafeName, slug, approved: false },
           });
           const user = await tx.user.create({
             data: { email: normalizedEmail, passwordHash, name },

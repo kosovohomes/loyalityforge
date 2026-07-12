@@ -7,6 +7,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const ctx = await getCurrentOrgContext();
   if (!ctx) redirect("/login");
 
+  // Gate: org must be approved and not suspended. Platform staff
+  // (SUPER_ADMIN, ACCOUNT_MANAGER) bypass this — they belong to the
+  // "platform" org which is always considered active.
+  if (ctx.role !== "SUPER_ADMIN" && ctx.role !== "ACCOUNT_MANAGER") {
+    if (!ctx.orgApproved) redirect("/pending");
+    if (ctx.orgSuspended) redirect("/suspended");
+  }
+
   return (
     <div className="min-h-screen bg-cream md:flex">
       <aside className="border-b border-espresso/10 bg-parchment/50 md:min-h-screen md:w-64 md:border-b-0 md:border-r">

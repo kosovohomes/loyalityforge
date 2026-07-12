@@ -18,11 +18,15 @@ async function requireOrg() {
   return ctx;
 }
 
-type Role = "SUPER_ADMIN" | "OWNER" | "MANAGER" | "STAFF";
+type Role = "SUPER_ADMIN" | "ACCOUNT_MANAGER" | "OWNER" | "MANAGER" | "STAFF";
+
+function isRole(value: string): value is Role {
+  return ["SUPER_ADMIN", "ACCOUNT_MANAGER", "OWNER", "MANAGER", "STAFF"].includes(value);
+}
 
 async function requireRole(allowed: Role[]) {
   const ctx = await requireOrg();
-  if (!allowed.includes(ctx.role)) {
+  if (!isRole(ctx.role) || !allowed.includes(ctx.role)) {
     throw new Error("Insufficient permissions for this action");
   }
   return ctx;
