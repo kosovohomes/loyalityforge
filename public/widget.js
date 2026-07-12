@@ -7,6 +7,11 @@
   var orgSlug = container.getAttribute("data-org");
   if (!orgSlug) return;
 
+  // The widget secret is required by the balance and join endpoints.
+  // Cafe owners generate it in /settings/api-keys and paste it into the
+  // data-widget-secret attribute of the container div.
+  var widgetSecret = container.getAttribute("data-widget-secret") || "";
+
   var API_BASE = window.LOYALTYFORGE_API_URL || window.location.origin;
   var primaryColor = "#b08d57";
   var espresso = "#3c2415";
@@ -147,7 +152,7 @@
 
       fetch(API_BASE + "/api/public/orgs/" + orgSlug + "/programs/" + state.selectedProgram.id + "/join", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-widget-secret": widgetSecret },
         body: JSON.stringify({ email: state.email, name: state.name || undefined }),
       })
         .then(function (r) { return r.json(); })
@@ -192,7 +197,7 @@
       btn.disabled = true;
       btn.textContent = "Checking...";
 
-      fetch(API_BASE + "/api/public/orgs/" + orgSlug + "/programs/" + state.selectedProgram.id + "/balance?email=" + encodeURIComponent(state.balanceEmail))
+      fetch(API_BASE + "/api/public/orgs/" + orgSlug + "/programs/" + state.selectedProgram.id + "/balance?email=" + encodeURIComponent(state.balanceEmail), { headers: { "x-widget-secret": widgetSecret } })
         .then(function (r) { return r.json(); })
         .then(function (data) {
           if (data.error) {
