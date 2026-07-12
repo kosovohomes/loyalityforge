@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import Link from "next/link";
 
 function LoginForm() {
@@ -19,12 +19,22 @@ function LoginForm() {
     setError(null);
     setLoading(true);
     const res = await signIn("credentials", { email, password, redirect: false });
-    setLoading(false);
     if (res?.error) {
       setError("Invalid email or password.");
+      setLoading(false);
       return;
     }
-    router.push("/dashboard");
+
+    // Fetch the session to determine where to redirect based on role.
+    // Platform staff (SUPER_ADMIN, ACCOUNT_MANAGER) go to /admin.
+    // Cafe members go to /dashboard (where they'll be gated by approval status).
+    const session = await getSession();
+    const role = session?.user?.role;
+    if (role === "SUPER_ADMIN" || role === "ACCOUNT_MANAGER") {
+      router.push("/admin");
+    } else {
+      router.push("/dashboard");
+    }
     router.refresh();
   }
 

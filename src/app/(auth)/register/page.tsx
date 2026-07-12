@@ -38,7 +38,9 @@ export default function RegisterPage() {
 
     // Step 2: try to auto sign-in. If this fails for any reason, redirect
     // to /login so the user can sign in manually — their account was
-    // already created in step 1.
+    // already created in step 1. New registrations are always cafe owners
+    // (not platform staff), so they go to /dashboard (where they'll see
+    // the "pending approval" screen until an admin approves them).
     try {
       const signInRes = await signIn("credentials", {
         email: form.email,
@@ -46,14 +48,12 @@ export default function RegisterPage() {
         redirect: false,
       });
       if (signInRes?.error) {
-        // Account created but auto-login failed — send them to /login.
         router.push("/login?registered=1");
         return;
       }
       router.push("/dashboard");
       router.refresh();
     } catch {
-      // Account created but signIn threw — send them to /login.
       router.push("/login?registered=1");
     }
   }

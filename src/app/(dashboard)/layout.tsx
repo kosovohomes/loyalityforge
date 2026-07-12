@@ -7,13 +7,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const ctx = await getCurrentOrgContext();
   if (!ctx) redirect("/login");
 
-  // Gate: org must be approved and not suspended. Platform staff
-  // (SUPER_ADMIN, ACCOUNT_MANAGER) bypass this — they belong to the
-  // "platform" org which is always considered active.
-  if (ctx.role !== "SUPER_ADMIN" && ctx.role !== "ACCOUNT_MANAGER") {
-    if (!ctx.orgApproved) redirect("/pending");
-    if (ctx.orgSuspended) redirect("/suspended");
+  // Platform staff belong to the "platform" org and should use /admin,
+  // not the cafe dashboard. Redirect them there.
+  if (ctx.role === "SUPER_ADMIN" || ctx.role === "ACCOUNT_MANAGER") {
+    redirect("/admin");
   }
+
+  // Gate: org must be approved and not suspended.
+  if (!ctx.orgApproved) redirect("/pending");
+  if (ctx.orgSuspended) redirect("/suspended");
 
   return (
     <div className="min-h-screen bg-cream md:flex">
